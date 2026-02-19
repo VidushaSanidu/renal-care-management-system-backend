@@ -317,13 +317,13 @@ class NotificationService {
 
       category: "LAB_RESULT",
 
-      recipient: recipientId,
+      recipient: new Types.ObjectId(recipientId),
 
-      createdBy,
+      createdBy: new Types.ObjectId(createdBy),
 
       relatedEntity: {
         entityType: "Patient",
-        entityId: patientId,
+        entityId: new Types.ObjectId(patientId),
       },
 
       data: {

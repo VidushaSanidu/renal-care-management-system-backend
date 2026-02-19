@@ -101,7 +101,12 @@ router.get(
        */
       const trendData = hbData.map((record) => {
         let status: "normal" | "low" | "high" = "normal";
-
+        if (record.hb === null || record.hb === undefined) {
+          console.warn(
+            `Missing Hb value for record on ${record.date.toISOString()}, skipping status assignment.`,
+          );
+          return;
+        }
         if (record.hb < normalRange.min) status = "low";
         else if (record.hb > normalRange.max) status = "high";
 
@@ -115,7 +120,9 @@ router.get(
       /**
        * Statistics
        */
-      const hbValues = hbData.map((r) => r.hb);
+      const hbValues = hbData
+        .map((r) => r.hb)
+        .filter((v): v is number => v !== null && v !== undefined);
 
       const average =
         hbValues.reduce((sum, val) => sum + val, 0) / hbValues.length;

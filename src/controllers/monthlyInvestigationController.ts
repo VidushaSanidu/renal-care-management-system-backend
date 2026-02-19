@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { validationResult } from "express-validator";
 import monthlyInvestigationService from "../services/monthlyInvestigationService.js";
 import type { InvestigationQueryParams } from "../services/monthlyInvestigationService.js";
+import type { IMonthlyInvestigation } from "../models/MonthlyInvestigation.js";
 
 class MonthlyInvestigationController {
   /**
@@ -16,8 +17,8 @@ class MonthlyInvestigationController {
       const { patientId } = req.params as { patientId: string };
 
       const queryParams: InvestigationQueryParams = {
-        page: req.query.page as string,
-        limit: req.query.limit as string,
+        page: Number(req.query.page),
+        limit: Number(req.query.limit),
         startDate: req.query.startDate as string,
         endDate: req.query.endDate as string,
       };
@@ -28,7 +29,7 @@ class MonthlyInvestigationController {
       );
 
       const formattedInvestigations = result.investigations.map(
-        (inv: unknown) =>
+        (inv: IMonthlyInvestigation) =>
           monthlyInvestigationService.formatInvestigationResponse(inv),
       );
 
@@ -74,6 +75,13 @@ class MonthlyInvestigationController {
           req.body,
           req.user!.id,
         );
+
+      if (!investigation) {
+        return res.status(404).json({
+          success: false,
+          message: "Patient not found",
+        });
+      }
 
       const formattedInvestigation =
         monthlyInvestigationService.formatInvestigationResponse(investigation);
