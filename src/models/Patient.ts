@@ -70,6 +70,8 @@ export interface IPatient extends Document {
   age: number;
 
   fullAddress: string;
+
+  notes?: object[];
 }
 
 /*

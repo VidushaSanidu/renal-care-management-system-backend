@@ -39,11 +39,11 @@ class PatientService {
     const query: Record<string, unknown> = {};
 
     // Role filtering
-    if (user.role === "doctor") {
+    if (user.role === "DOCTOR") {
       query.assignedDoctor = user._id;
     }
 
-    if (user.role === "nurse") {
+    if (user.role === "NURSE") {
       query.assignedNurse = user._id;
     }
 
@@ -173,7 +173,7 @@ class PatientService {
 
     if (!patient) return null;
 
-    patient.notes.push({
+    patient.notes?.push({
       ...noteData,
       addedAt: new Date(),
     });
@@ -182,7 +182,11 @@ class PatientService {
 
     await patient.populate("notes.addedBy", "name role");
 
-    return patient.notes.at(-1);
+    if (patient.notes) {
+      return patient.notes.at(-1);
+    }
+
+    return null;
   }
 
   /*
@@ -194,11 +198,11 @@ class PatientService {
   static async getPatientStatistics(user: IUser) {
     const match: Record<string, unknown> = {};
 
-    if (user.role === "doctor") {
+    if (user.role === "DOCTOR") {
       match.assignedDoctor = user._id;
     }
 
-    if (user.role === "nurse") {
+    if (user.role === "NURSE") {
       match.assignedNurse = user._id;
     }
 
@@ -300,11 +304,11 @@ class PatientService {
   ): Promise<PatientSearchResult[]> {
     const baseQuery: Record<string, unknown> = {};
 
-    if (user.role === "doctor") {
+    if (user.role === "DOCTOR") {
       baseQuery.assignedDoctor = user._id;
     }
 
-    if (user.role === "nurse") {
+    if (user.role === "NURSE") {
       baseQuery.assignedNurse = user._id;
     }
 

@@ -25,8 +25,8 @@ import errorHandler from "./middleware/errorHandler.js";
 
 // Import utilities
 import { connectDB } from "./config/database.js";
-import { initializeSocket } from "./config/socket.js";
 import ScheduledNotificationService from "./services/scheduledNotificationService.js";
+import envConfig from "./config/env.config.js";
 
 /*
 |--------------------------------------------------------------------------
@@ -56,21 +56,13 @@ ScheduledNotificationService.initializeScheduledNotifications();
 
 /*
 |--------------------------------------------------------------------------
-| Socket initialization
-|--------------------------------------------------------------------------
-*/
-
-initializeSocket(server);
-
-/*
-|--------------------------------------------------------------------------
 | Middleware
 |--------------------------------------------------------------------------
 */
 
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL ?? "http://localhost:3000",
+    origin: envConfig.FRONTEND_URL,
     credentials: true,
   }),
 );

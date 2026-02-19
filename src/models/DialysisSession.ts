@@ -346,7 +346,7 @@ dialysisSessionSchema.post(
             message: issue.message,
             type: issue.priority === "HIGH" ? "WARNING" : "INFO",
             priority: issue.priority,
-            recipient: patient.assignedDoctor._id,
+            recipient: patient.assignedDoctor as Types.ObjectId,
           });
         }
 

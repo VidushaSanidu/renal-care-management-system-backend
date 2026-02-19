@@ -306,7 +306,7 @@ monthlyInvestigationSchema.post(
             message: `${patient.name}: ${value.parameter} ${value.value}`,
             type: "CRITICAL",
             priority: "URGENT",
-            recipient: patient.assignedDoctor._id,
+            recipient: patient.assignedDoctor,
           });
         }
 

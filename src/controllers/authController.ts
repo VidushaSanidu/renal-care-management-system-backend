@@ -1,16 +1,6 @@
 import { Request, Response } from "express";
 import { validationResult } from "express-validator";
-import authService from "../services/authService.js";
-
-/**
- * Extend Express Request to include authenticated user
- */
-interface AuthenticatedRequest extends Request {
-  user?: {
-    id: string;
-    role?: string;
-  };
-}
+import authService, { LoginInput } from "../services/authService.js";
 
 class AuthController {
   /**
@@ -63,9 +53,8 @@ class AuthController {
         });
       }
 
-      const { email, password } = req.body;
-
-      const result = await authService.loginUser(email, password);
+      const loginInput = req.body as LoginInput;
+      const result = await authService.loginUser(loginInput);
 
       return res.json({
         success: true,
@@ -86,7 +75,7 @@ class AuthController {
    * @desc Get current user
    * @route GET /api/auth/me
    */
-  async getMe(req: AuthenticatedRequest, res: Response): Promise<Response> {
+  async getMe(req: Request, res: Response): Promise<Response> {
     try {
       const userId = req.user?.id;
 
@@ -116,10 +105,7 @@ class AuthController {
   /**
    * @desc Update profile
    */
-  async updateProfile(
-    req: AuthenticatedRequest,
-    res: Response,
-  ): Promise<Response> {
+  async updateProfile(req: Request, res: Response): Promise<Response> {
     try {
       const errors = validationResult(req);
 
@@ -159,10 +145,7 @@ class AuthController {
   /**
    * @desc Change password
    */
-  async changePassword(
-    req: AuthenticatedRequest,
-    res: Response,
-  ): Promise<Response> {
+  async changePassword(req: Request, res: Response): Promise<Response> {
     try {
       const errors = validationResult(req);
 
@@ -248,8 +231,8 @@ class AuthController {
         });
       }
 
-      const { password } = req.body;
-      const { resetToken } = req.params;
+      const { password } = req.body as { password: string };
+      const { resetToken } = req.params as { resetToken: string };
 
       await authService.resetPassword(resetToken, password);
 
@@ -270,7 +253,7 @@ class AuthController {
   /**
    * @desc Logout
    */
-  async logout(req: Request, res: Response): Promise<Response> {
+  async logout(res: Response): Promise<Response> {
     return res.json({
       success: true,
       message: "Logged out successfully",

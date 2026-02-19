@@ -29,7 +29,7 @@ interface DecisionQuery {
 // GET all decisions
 // =========================
 
-router.get("/", protect, async (req: AuthRequest, res: Response) => {
+router.get("/", protect, async (req: Request, res: Response) => {
   try {
     const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 10;
@@ -46,7 +46,7 @@ router.get("/", protect, async (req: AuthRequest, res: Response) => {
     if (req.query.priority) query.priority = String(req.query.priority);
 
     // Role restriction
-    if (req.user.role === "doctor") query.doctorId = req.user.id;
+    if (req.user.role === "DOCTOR") query.doctorId = req.user.id;
 
     const decisions = await ClinicalDecision.find(query)
       .populate("patient", "name patientId")
@@ -78,7 +78,7 @@ router.get("/", protect, async (req: AuthRequest, res: Response) => {
 // GET decision by id
 // =========================
 
-router.get("/:id", protect, async (req: AuthRequest, res: Response) => {
+router.get("/:id", protect, async (req: Request, res: Response) => {
   try {
     const decision = await ClinicalDecision.findById(req.params.id)
       .populate("patient", "name patientId")
@@ -91,7 +91,7 @@ router.get("/:id", protect, async (req: AuthRequest, res: Response) => {
       });
 
     if (
-      req.user.role === "doctor" &&
+      req.user.role === "DOCTOR" &&
       decision.doctorId.toString() !== req.user.id
     )
       return res.status(403).json({
@@ -110,7 +110,7 @@ router.get("/:id", protect, async (req: AuthRequest, res: Response) => {
 // CREATE decision
 // =========================
 
-router.post("/", protect, async (req: AuthRequest, res: Response) => {
+router.post("/", protect, async (req: Request, res: Response) => {
   try {
     if (!["doctor", "admin"].includes(req.user.role))
       return res.status(403).json({
@@ -144,7 +144,7 @@ router.post("/", protect, async (req: AuthRequest, res: Response) => {
 // UPDATE decision
 // =========================
 
-router.put("/:id", protect, async (req: AuthRequest, res: Response) => {
+router.put("/:id", protect, async (req: Request, res: Response) => {
   try {
     const decision = await ClinicalDecision.findById(req.params.id);
 
@@ -185,7 +185,7 @@ router.put("/:id", protect, async (req: AuthRequest, res: Response) => {
 // DELETE decision
 // =========================
 
-router.delete("/:id", protect, async (req: AuthRequest, res: Response) => {
+router.delete("/:id", protect, async (req: Request, res: Response) => {
   try {
     const decision = await ClinicalDecision.findById(req.params.id);
 
@@ -218,42 +218,38 @@ router.delete("/:id", protect, async (req: AuthRequest, res: Response) => {
 // IMPLEMENT decision
 // =========================
 
-router.patch(
-  "/:id/implement",
-  protect,
-  async (req: AuthRequest, res: Response) => {
-    try {
-      const decision = await ClinicalDecision.findById(req.params.id);
+router.patch("/:id/implement", protect, async (req: Request, res: Response) => {
+  try {
+    const decision = await ClinicalDecision.findById(req.params.id);
 
-      if (!decision)
-        return res.status(404).json({
-          message: "Clinical decision not found",
-        });
-
-      const updateData: any = {
-        status: "implemented",
-        implementedBy: req.user.id,
-        implementedAt: new Date(),
-      };
-
-      if (req.body.notes) updateData.notes = req.body.notes;
-
-      const updatedDecision = await ClinicalDecision.findByIdAndUpdate(
-        req.params.id,
-        updateData,
-        { new: true, runValidators: true },
-      )
-        .populate("patient", "name patientId")
-        .populate("doctorId", "name")
-        .populate("implementedBy", "name");
-
-      res.json(updatedDecision);
-    } catch (error: any) {
-      res.status(400).json({
-        message: error.message,
+    if (!decision)
+      return res.status(404).json({
+        message: "Clinical decision not found",
       });
-    }
-  },
-);
+
+    const updateData: any = {
+      status: "implemented",
+      implementedBy: req.user.id,
+      implementedAt: new Date(),
+    };
+
+    if (req.body.notes) updateData.notes = req.body.notes;
+
+    const updatedDecision = await ClinicalDecision.findByIdAndUpdate(
+      req.params.id,
+      updateData,
+      { new: true, runValidators: true },
+    )
+      .populate("patient", "name patientId")
+      .populate("doctorId", "name")
+      .populate("implementedBy", "name");
+
+    res.json(updatedDecision);
+  } catch (error: any) {
+    res.status(400).json({
+      message: error.message,
+    });
+  }
+});
 
 export default router;

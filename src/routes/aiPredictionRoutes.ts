@@ -2,9 +2,7 @@ import express, { Router } from "express";
 
 import { protect, authorize } from "../middleware/auth.js";
 
-import {
-  validatePatientIdParam,
-} from "../middleware/aiPredictionValidation.js";
+import { validatePatientIdParam } from "../middleware/aiPredictionValidation.js";
 
 import {
   predictHemoglobin,

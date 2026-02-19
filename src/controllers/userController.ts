@@ -1,27 +1,7 @@
 import { Request, Response } from "express";
 import { validationResult } from "express-validator";
 import userService from "../services/userService.js";
-
-/**
- * Extend Express Request to include authenticated user
- */
-interface AuthenticatedRequest extends Request {
-  user?: {
-    id: string;
-    role: string;
-  };
-}
-
-/**
- * Query params type
- */
-interface UserQueryParams {
-  page?: string;
-  limit?: string;
-  role?: string;
-  isActive?: string;
-  search?: string;
-}
+import { validUserRoles, type UserRole } from "../models/User.js";
 
 class UserController {
   /**
@@ -29,10 +9,10 @@ class UserController {
    */
   async getAllUsers(req: Request, res: Response): Promise<Response> {
     try {
-      const queryParams: UserQueryParams = {
-        page: req.query.page as string,
-        limit: req.query.limit as string,
-        role: req.query.role as string,
+      const queryParams = {
+        page: req.query.page ? Number(req.query.page) : undefined,
+        limit: req.query.limit ? Number(req.query.limit) : undefined,
+        role: req.query.role as UserRole | undefined,
         isActive: req.query.isActive as string,
         search: req.query.search as string,
       };
@@ -64,15 +44,12 @@ class UserController {
   /**
    * @desc Get user by ID
    */
-  async getUserById(
-    req: AuthenticatedRequest,
-    res: Response,
-  ): Promise<Response> {
+  async getUserById(req: Request, res: Response): Promise<Response> {
     try {
-      userService.checkUserAccess(req.user, req.params.id);
+      const { id } = req.params as { id: string };
+      const user = await userService.getUserById(id);
 
-      const user = await userService.getUserById(req.params.id);
-
+      userService.checkUserAccess(user, id);
       return res.json({
         success: true,
         user,
@@ -142,7 +119,9 @@ class UserController {
         });
       }
 
-      const user = await userService.updateUser(req.params.id, req.body);
+      const { id } = req.params as { id: string };
+
+      const user = await userService.updateUser(id, req.body);
 
       return res.json({
         success: true,
@@ -170,12 +149,10 @@ class UserController {
   /**
    * @desc Delete user
    */
-  async deleteUser(
-    req: AuthenticatedRequest,
-    res: Response,
-  ): Promise<Response> {
+  async deleteUser(req: Request, res: Response): Promise<Response> {
     try {
-      await userService.deleteUser(req.params.id, req.user!.id);
+      const { id } = req.params as { id: string };
+      await userService.deleteUser(id, req.user!.id);
 
       return res.json({
         success: true,
@@ -199,7 +176,8 @@ class UserController {
    */
   async activateUser(req: Request, res: Response): Promise<Response> {
     try {
-      const user = await userService.activateUser(req.params.id);
+      const { id } = req.params as { id: string };
+      const user = await userService.activateUser(id);
 
       return res.json({
         success: true,
@@ -222,7 +200,15 @@ class UserController {
    */
   async getUsersByRole(req: Request, res: Response): Promise<Response> {
     try {
-      const users = await userService.getUsersByRole(req.params.role);
+      const { role } = req.params as { role: UserRole };
+
+      if (!validUserRoles.includes(role)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid role",
+        });
+      }
+      const users = await userService.getUsersByRole(role);
 
       return res.json({
         success: true,

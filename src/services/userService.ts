@@ -303,7 +303,7 @@ class UserService {
 
   checkUserAccess(requestingUser: IUser, targetUserId: string) {
     if (
-      requestingUser.role !== "admin" &&
+      requestingUser.role !== "ADMIN" &&
       requestingUser._id.toString() !== targetUserId
     ) {
       throw new Error("Not authorized");

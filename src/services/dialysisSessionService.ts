@@ -1,10 +1,9 @@
 import DialysisSession from "../models/DialysisSession.js";
 import Patient from "../models/Patient.js";
 
-import { Types, FilterQuery } from "mongoose";
+import { Types, QueryFilter } from "mongoose";
 
 import type { IDialysisSession } from "../models/DialysisSession.js";
-import type { IPatient } from "../models/Patient.js";
 
 /*
 |--------------------------------------------------------------------------
@@ -74,7 +73,7 @@ class DialysisSessionService {
 
     const skip = (page - 1) * limit;
 
-    const query: FilterQuery<IDialysisSession> = {
+    const query: QueryFilter<IDialysisSession> = {
       patient: patient._id,
     };
 

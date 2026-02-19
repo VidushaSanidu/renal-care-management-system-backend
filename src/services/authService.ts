@@ -58,14 +58,12 @@ class AuthService {
   generateToken(user: HydratedDocument<IUser>): string {
     return jwt.sign(
       {
-        id: user._id,
+        id: user._id.toString(),
         role: user.role,
       },
-
-      envConfig.JWT_SECRET as string,
-
+      envConfig.JWT_SECRET,
       {
-        expiresIn: envConfig.JWT_EXPIRE,
+        expiresIn: envConfig.JWT_EXPIRE as jwt.SignOptions["expiresIn"],
       },
     );
   }
@@ -187,35 +185,30 @@ class AuthService {
 
   async updateUserProfile(
     userId: string | Types.ObjectId,
-
     updates: Partial<IUser>,
   ) {
-    const allowedFields = [
+    const allowedFields: readonly (keyof IUser)[] = [
       "name",
       "phoneNumber",
       "department",
       "notifications",
-    ] as const;
+    ];
 
-    const filteredUpdates: Partial<IUser> = {};
-
-    for (const field of allowedFields) {
-      if (updates[field] !== undefined) {
-        filteredUpdates[field] = updates[field];
-      }
-    }
+    const filteredUpdates = Object.fromEntries(
+      allowedFields
+        .filter((field) => updates[field] !== undefined)
+        .map((field) => [field, updates[field]]),
+    ) as Partial<IUser>;
 
     const user = await User.findByIdAndUpdate(userId, filteredUpdates, {
       new: true,
       runValidators: true,
-    });
+    }).lean();
 
-    if (!user) {
-      throw new Error("User not found");
-    }
+    if (!user) throw new Error("User not found");
 
     return {
-      id: user._id,
+      id: user._id.toString(),
       name: user.name,
       email: user.email,
       role: user.role,

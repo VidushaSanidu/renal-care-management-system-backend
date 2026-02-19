@@ -3,16 +3,6 @@ import { validationResult } from "express-validator";
 import AIPredictionService from "../services/aiPredictionService.js";
 
 /**
- * Extend Express Request to include authenticated user
- */
-interface AuthenticatedRequest extends Request {
-  user?: {
-    id: string;
-    role?: string;
-  };
-}
-
-/**
  * Extract Bearer token safely
  */
 const extractToken = (req: Request): string | null => {
@@ -33,7 +23,7 @@ const extractToken = (req: Request): string | null => {
  * Predict Hemoglobin
  */
 export const predictHemoglobin = async (
-  req: AuthenticatedRequest,
+  req: Request,
   res: Response,
 ): Promise<Response> => {
   try {
@@ -46,7 +36,7 @@ export const predictHemoglobin = async (
       });
     }
 
-    const { patientId } = req.params;
+    const { patientId } = req.params as { patientId: string };
 
     if (!patientId) {
       return res.status(400).json({
@@ -58,7 +48,7 @@ export const predictHemoglobin = async (
     const patientData =
       await AIPredictionService.getPatientDataForHbPrediction(patientId);
 
-    if (!patientData.success) {
+    if (!patientData) {
       return res.status(404).json({
         success: false,
         message: "Patient data not found",
@@ -81,7 +71,7 @@ export const predictHemoglobin = async (
 
     return res.json({
       success: true,
-      patient: patientData.patientInfo,
+      patient: patientData.patient,
       prediction,
       requestedBy: req.user?.id,
       requestedAt: new Date().toISOString(),
@@ -101,11 +91,11 @@ export const predictHemoglobin = async (
  * Predict URR
  */
 export const predictURR = async (
-  req: AuthenticatedRequest,
+  req: Request,
   res: Response,
 ): Promise<Response> => {
   try {
-    const { patientId } = req.params;
+    const { patientId } = req.params as { patientId: string };
 
     const patientData =
       await AIPredictionService.getPatientDataForUrrPrediction(patientId);
@@ -144,11 +134,11 @@ export const predictURR = async (
  * Predict Dry Weight
  */
 export const predictDryWeight = async (
-  req: AuthenticatedRequest,
+  req: Request,
   res: Response,
 ): Promise<Response> => {
   try {
-    const { patientId } = req.params;
+    const { patientId } = req.params as { patientId: string };
 
     const patientData =
       await AIPredictionService.getPatientDataForDryWeightPrediction(patientId);

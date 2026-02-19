@@ -1,26 +1,7 @@
 import { Request, Response } from "express";
 import { validationResult } from "express-validator";
 import monthlyInvestigationService from "../services/monthlyInvestigationService.js";
-
-/**
- * Extend Express Request to include authenticated user
- */
-interface AuthenticatedRequest extends Request {
-  user?: {
-    id: string;
-    role?: string;
-  };
-}
-
-/**
- * Query params type
- */
-interface InvestigationQueryParams {
-  page?: string;
-  limit?: string;
-  startDate?: string;
-  endDate?: string;
-}
+import type { InvestigationQueryParams } from "../services/monthlyInvestigationService.js";
 
 class MonthlyInvestigationController {
   /**
@@ -32,7 +13,7 @@ class MonthlyInvestigationController {
     res: Response,
   ): Promise<Response> {
     try {
-      const { patientId } = req.params;
+      const { patientId } = req.params as { patientId: string };
 
       const queryParams: InvestigationQueryParams = {
         page: req.query.page as string,
@@ -73,12 +54,9 @@ class MonthlyInvestigationController {
    * @desc Create investigation
    * @route POST /api/monthly-investigations/:patientId
    */
-  async createInvestigation(
-    req: AuthenticatedRequest,
-    res: Response,
-  ): Promise<Response> {
+  async createInvestigation(req: Request, res: Response): Promise<Response> {
     try {
-      const { patientId } = req.params;
+      const { patientId } = req.params as { patientId: string };
 
       const errors = validationResult(req);
 
@@ -119,7 +97,7 @@ class MonthlyInvestigationController {
    */
   async getInvestigationById(req: Request, res: Response): Promise<Response> {
     try {
-      const { patientId, id } = req.params;
+      const { patientId, id } = req.params as { patientId: string; id: string };
 
       const investigation =
         await monthlyInvestigationService.getInvestigationById(patientId, id);
@@ -146,12 +124,9 @@ class MonthlyInvestigationController {
   /**
    * @desc Update investigation
    */
-  async updateInvestigation(
-    req: AuthenticatedRequest,
-    res: Response,
-  ): Promise<Response> {
+  async updateInvestigation(req: Request, res: Response): Promise<Response> {
     try {
-      const { patientId, id } = req.params;
+      const { patientId, id } = req.params as { patientId: string; id: string };
 
       const errors = validationResult(req);
 
@@ -194,7 +169,7 @@ class MonthlyInvestigationController {
    */
   async deleteInvestigation(req: Request, res: Response): Promise<Response> {
     try {
-      const { patientId, id } = req.params;
+      const { patientId, id } = req.params as { patientId: string; id: string };
 
       await monthlyInvestigationService.deleteInvestigation(patientId, id);
 

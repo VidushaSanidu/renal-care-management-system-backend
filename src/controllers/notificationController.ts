@@ -3,16 +3,6 @@ import { validationResult } from "express-validator";
 import notificationService from "../services/notificationService.js";
 
 /**
- * Extend Express Request to include authenticated user
- */
-interface AuthenticatedRequest extends Request {
-  user?: {
-    id: string;
-    role: string;
-  };
-}
-
-/**
  * Query options type
  */
 interface NotificationQueryOptions {
@@ -28,10 +18,7 @@ class NotificationController {
   /**
    * Get notifications for authenticated user
    */
-  async getNotifications(
-    req: AuthenticatedRequest,
-    res: Response,
-  ): Promise<Response> {
+  async getNotifications(req: Request, res: Response): Promise<Response> {
     try {
       const errors = validationResult(req);
 
@@ -83,10 +70,7 @@ class NotificationController {
   /**
    * Get notification by ID
    */
-  async getNotificationById(
-    req: AuthenticatedRequest,
-    res: Response,
-  ): Promise<Response> {
+  async getNotificationById(req: Request, res: Response): Promise<Response> {
     try {
       const errors = validationResult(req);
 
@@ -97,7 +81,7 @@ class NotificationController {
         });
       }
 
-      const { id } = req.params;
+      const { id } = req.params as { id: string };
       const userId = req.user!.id;
 
       const notification = await notificationService.getNotificationById(
@@ -131,10 +115,7 @@ class NotificationController {
   /**
    * Create notification
    */
-  async createNotification(
-    req: AuthenticatedRequest,
-    res: Response,
-  ): Promise<Response> {
+  async createNotification(req: Request, res: Response): Promise<Response> {
     try {
       const errors = validationResult(req);
 
@@ -172,12 +153,9 @@ class NotificationController {
   /**
    * Mark notification as read
    */
-  async markAsRead(
-    req: AuthenticatedRequest,
-    res: Response,
-  ): Promise<Response> {
+  async markAsRead(req: Request, res: Response): Promise<Response> {
     try {
-      const { id } = req.params;
+      const { id } = req.params as { id: string };
       const userId = req.user!.id;
 
       const notification = await notificationService.markAsRead(id, userId);
@@ -207,10 +185,7 @@ class NotificationController {
   /**
    * Mark all as read
    */
-  async markAllAsRead(
-    req: AuthenticatedRequest,
-    res: Response,
-  ): Promise<Response> {
+  async markAllAsRead(req: Request, res: Response): Promise<Response> {
     try {
       const result = await notificationService.markAllAsRead(req.user!.id);
 
@@ -232,10 +207,7 @@ class NotificationController {
   /**
    * Get unread count
    */
-  async getUnreadCount(
-    req: AuthenticatedRequest,
-    res: Response,
-  ): Promise<Response> {
+  async getUnreadCount(req: Request, res: Response): Promise<Response> {
     try {
       const result = await notificationService.getUnreadCount(req.user!.id);
 
@@ -257,12 +229,9 @@ class NotificationController {
   /**
    * Delete notification
    */
-  async deleteNotification(
-    req: AuthenticatedRequest,
-    res: Response,
-  ): Promise<Response> {
+  async deleteNotification(req: Request, res: Response): Promise<Response> {
     try {
-      const { id } = req.params;
+      const { id } = req.params as { id: string };
 
       const notification = await notificationService.deleteNotification(
         id,
@@ -291,11 +260,39 @@ class NotificationController {
     }
   }
 
+  async deleteAllNotifications(req: Request, res: Response): Promise<Response> {
+    try {
+      const userId = req.user.id;
+      const result = await notificationService.deleteAllNotifications(userId);
+
+      return res.status(200).json({
+        success: true,
+        message: "All notifications deleted successfully",
+        data: { deletedCount: result.deletedCount },
+      });
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "Server error";
+
+      if (message === "Notification not found") {
+        return res.status(404).json({
+          success: false,
+          message,
+        });
+      }
+
+      return res.status(500).json({
+        success: false,
+        message: "Failed to delete notifications",
+        error: message,
+      });
+    }
+  }
+
   /**
    * Broadcast notification (admin only)
    */
   async createBroadcastNotification(
-    req: AuthenticatedRequest,
+    req: Request,
     res: Response,
   ): Promise<Response> {
     try {

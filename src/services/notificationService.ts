@@ -1,7 +1,7 @@
 import Notification from "../models/Notification.js";
 import User from "../models/User.js";
 
-import { Types, FilterQuery } from "mongoose";
+import { Types, QueryFilter } from "mongoose";
 
 import type { INotification } from "../models/Notification.js";
 
@@ -65,7 +65,7 @@ class NotificationService {
   ) {
     const { page = 1, limit = 20, type, category, priority, isRead } = options;
 
-    const filter: FilterQuery<INotification> = {
+    const filter: QueryFilter<INotification> = {
       recipient: userId,
     };
 

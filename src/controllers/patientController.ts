@@ -1,27 +1,20 @@
 import { Request, Response } from "express";
 import { validationResult } from "express-validator";
 import PatientService from "../services/patientService.js";
-
-/**
- * Extend Express Request to include authenticated user
- */
-interface AuthenticatedRequest extends Request {
-  user?: {
-    id: string;
-    role: string;
-  };
-}
+import userService from "../services/userService.js";
 
 /**
  * @desc Get all patients
  * @route GET /api/patients
  */
 export const getPatients = async (
-  req: AuthenticatedRequest,
+  req: Request,
   res: Response,
 ): Promise<Response> => {
   try {
-    const result = await PatientService.getAllPatients(req.user);
+    const { id } = req.params as { id: string };
+    const user = await userService.getUserById(id);
+    const result = await PatientService.getAllPatients(user);
 
     return res.json(result);
   } catch (error) {
@@ -43,7 +36,8 @@ export const getPatientById = async (
   res: Response,
 ): Promise<Response> => {
   try {
-    const patient = await PatientService.getPatientById(req.params.id);
+    const { id } = req.params as { id: string };
+    const patient = await PatientService.getPatientById(id);
 
     if (!patient) {
       return res.status(404).json({
@@ -71,7 +65,7 @@ export const getPatientById = async (
  * @desc Create patient
  */
 export const createPatient = async (
-  req: AuthenticatedRequest,
+  req: Request,
   res: Response,
 ): Promise<Response> => {
   try {
@@ -129,7 +123,9 @@ export const updatePatient = async (
       });
     }
 
-    const patient = await PatientService.updatePatient(req.params.id, req.body);
+    const { id } = req.params as { id: string };
+
+    const patient = await PatientService.updatePatient(id, req.body);
 
     if (!patient) {
       return res.status(404).json({
@@ -162,7 +158,8 @@ export const deletePatient = async (
   res: Response,
 ): Promise<Response> => {
   try {
-    const result = await PatientService.deletePatient(req.params.id);
+    const { id } = req.params as { id: string };
+    const result = await PatientService.deletePatient(id);
 
     if (!result) {
       return res.status(404).json({
@@ -190,7 +187,7 @@ export const deletePatient = async (
  * @desc Add patient note
  */
 export const addPatientNote = async (
-  req: AuthenticatedRequest,
+  req: Request,
   res: Response,
 ): Promise<Response> => {
   try {
@@ -208,8 +205,9 @@ export const addPatientNote = async (
       type: req.body.type ?? "GENERAL",
       addedBy: req.user!.id,
     };
+    const { id } = req.params as { id: string };
 
-    const note = await PatientService.addNote(req.params.id, noteData);
+    const note = await PatientService.addNote(id, noteData);
 
     if (!note) {
       return res.status(404).json({
@@ -238,11 +236,13 @@ export const addPatientNote = async (
  * @desc Get stats
  */
 export const getPatientStats = async (
-  req: AuthenticatedRequest,
+  req: Request,
   res: Response,
 ): Promise<Response> => {
   try {
-    const stats = await PatientService.getPatientStatistics(req.user);
+    const { id } = req.params as { id: string };
+    const user = await userService.getUserById(id);
+    const stats = await PatientService.getPatientStatistics(user);
 
     return res.json({
       success: true,
@@ -263,13 +263,14 @@ export const getPatientStats = async (
  * @desc Search patients
  */
 export const searchPatients = async (
-  req: AuthenticatedRequest,
+  req: Request,
   res: Response,
 ): Promise<Response> => {
   try {
     const query = req.query.q as string;
-
-    const patients = await PatientService.searchPatients(query, req.user);
+    const { id } = req.params as { id: string };
+    const user = await userService.getUserById(id);
+    const patients = await PatientService.searchPatients(query, user);
 
     return res.json({
       success: true,

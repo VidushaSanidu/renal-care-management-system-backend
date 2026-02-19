@@ -1,42 +1,20 @@
 import { Request, Response } from "express";
 import { validationResult } from "express-validator";
 import dialysisSessionService from "../services/dialysisSessionService.js";
-
-/**
- * Extend Express Request to include authenticated user
- */
-interface AuthenticatedRequest extends Request {
-  user?: {
-    id: string;
-    role: string;
-  };
-}
-
-/**
- * Query params type
- */
-interface SessionQueryParams {
-  page?: string;
-  limit?: string;
-  startDate?: string;
-  endDate?: string;
-  status?: string;
-}
+import type { SessionQueryParams } from "../services/dialysisSessionService.js";
+import { IDialysisSession } from "../models/DialysisSession.js";
 
 class DialysisSessionController {
   /**
    * @desc Get all dialysis sessions for a patient
    */
-  async getPatientSessions(
-    req: AuthenticatedRequest,
-    res: Response,
-  ): Promise<Response> {
+  async getPatientSessions(req: Request, res: Response): Promise<Response> {
     try {
-      const { patientId } = req.params;
+      const { patientId } = req.params as { patientId: string };
 
       const queryParams: SessionQueryParams = {
-        page: req.query.page as string,
-        limit: req.query.limit as string,
+        page: req.query.page ? Number(req.query.page) : 0,
+        limit: req.query.limit ? Number(req.query.limit) : 0,
         startDate: req.query.startDate as string,
         endDate: req.query.endDate as string,
         status: req.query.status as string,
@@ -49,8 +27,9 @@ class DialysisSessionController {
         queryParams,
       );
 
-      const formattedSessions = result.sessions.map((session: unknown) =>
-        dialysisSessionService.formatSessionResponse(session),
+      const formattedSessions = result.sessions.map(
+        (session: IDialysisSession) =>
+          dialysisSessionService.formatSessionResponse(session),
       );
 
       return res.json({
@@ -74,12 +53,9 @@ class DialysisSessionController {
   /**
    * @desc Get dialysis session by ID
    */
-  async getSessionById(
-    req: AuthenticatedRequest,
-    res: Response,
-  ): Promise<Response> {
+  async getSessionById(req: Request, res: Response): Promise<Response> {
     try {
-      const { patientId, id } = req.params;
+      const { patientId, id } = req.params as { patientId: string; id: string };
 
       const session = await dialysisSessionService.getSessionById(
         patientId,
@@ -114,12 +90,9 @@ class DialysisSessionController {
   /**
    * @desc Create session
    */
-  async createSession(
-    req: AuthenticatedRequest,
-    res: Response,
-  ): Promise<Response> {
+  async createSession(req: Request, res: Response): Promise<Response> {
     try {
-      const { patientId } = req.params;
+      const { patientId } = req.params as { patientId: string };
 
       const errors = validationResult(req);
 
@@ -135,6 +108,13 @@ class DialysisSessionController {
         req.body,
         req.user!.id,
       );
+
+      if (!session) {
+        return res.status(500).json({
+          success: false,
+          message: "Failed to create dialysis session",
+        });
+      }
 
       const formattedSession =
         dialysisSessionService.formatSessionResponse(session);
@@ -157,12 +137,9 @@ class DialysisSessionController {
   /**
    * @desc Update session
    */
-  async updateSession(
-    req: AuthenticatedRequest,
-    res: Response,
-  ): Promise<Response> {
+  async updateSession(req: Request, res: Response): Promise<Response> {
     try {
-      const { patientId, id } = req.params;
+      const { patientId, id } = req.params as { patientId: string; id: string };
 
       const errors = validationResult(req);
 
@@ -208,12 +185,9 @@ class DialysisSessionController {
   /**
    * @desc Complete session
    */
-  async completeSession(
-    req: AuthenticatedRequest,
-    res: Response,
-  ): Promise<Response> {
+  async completeSession(req: Request, res: Response): Promise<Response> {
     try {
-      const { patientId, id } = req.params;
+      const { patientId, id } = req.params as { patientId: string; id: string };
 
       const errors = validationResult(req);
 
@@ -251,12 +225,9 @@ class DialysisSessionController {
   /**
    * @desc Delete session
    */
-  async deleteSession(
-    req: AuthenticatedRequest,
-    res: Response,
-  ): Promise<Response> {
+  async deleteSession(req: Request, res: Response): Promise<Response> {
     try {
-      const { patientId, id } = req.params;
+      const { patientId, id } = req.params as { patientId: string; id: string };
 
       await dialysisSessionService.deleteSession(patientId, id);
 
@@ -277,10 +248,7 @@ class DialysisSessionController {
   /**
    * @desc Get stats
    */
-  async getSessionStats(
-    req: AuthenticatedRequest,
-    res: Response,
-  ): Promise<Response> {
+  async getSessionStats(req: Request, res: Response): Promise<Response> {
     try {
       const stats = await dialysisSessionService.getSessionStats(
         req.user!.id,

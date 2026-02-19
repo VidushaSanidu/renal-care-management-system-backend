@@ -5,13 +5,6 @@ import Patient from "../models/Patient.js";
 import envConfig from "../config/env.config.js";
 
 /**
- * Extend Express Request to include user
- */
-export interface AuthenticatedRequest extends Request {
-  user?: any; // replace with IUser if you have a User interface
-}
-
-/**
  * JWT payload interface
  */
 interface TokenPayload extends JwtPayload {
@@ -22,7 +15,7 @@ interface TokenPayload extends JwtPayload {
  * Protect routes middleware
  */
 export const protect = async (
-  req: AuthenticatedRequest,
+  req: Request,
   res: Response,
   next: NextFunction,
 ): Promise<Response | void> => {
@@ -77,11 +70,7 @@ export const protect = async (
  */
 export const authorize =
   (...roles: string[]) =>
-  (
-    req: AuthenticatedRequest,
-    res: Response,
-    next: NextFunction,
-  ): Response | void => {
+  (req: Request, res: Response, next: NextFunction): Response | void => {
     if (!req.user || !roles.includes(req.user.role)) {
       return res.status(403).json({
         success: false,
@@ -97,11 +86,7 @@ export const authorize =
  */
 export const checkOwnership =
   (resourceField = "user") =>
-  (
-    req: AuthenticatedRequest,
-    res: Response,
-    next: NextFunction,
-  ): Response | void => {
+  (req: Request, res: Response, next: NextFunction): Response | void => {
     if (req.user?.role === "admin") {
       return next();
     }
@@ -122,7 +107,7 @@ export const checkOwnership =
  * Patient assignment check
  */
 export const checkPatientAssignment = async (
-  req: AuthenticatedRequest,
+  req: Request,
   res: Response,
   next: NextFunction,
 ): Promise<Response | void> => {
@@ -179,8 +164,7 @@ export const checkPatientAssignment = async (
  * Optional authentication
  */
 export const optionalAuth = async (
-  req: AuthenticatedRequest,
-  res: Response,
+  req: Request,
   next: NextFunction,
 ): Promise<void> => {
   let token: string | undefined;
@@ -198,9 +182,12 @@ export const optionalAuth = async (
 
       const user = await User.findById(decoded.id).select("-password");
 
-      req.user = user;
+      if (user) {
+        req.user = user;
+      }
     } catch {
-      req.user = undefined;
+      console.warn("Invalid token in optionalAuth middleware");
+      // User token is invalid, leave req.user as is
     }
   }
 

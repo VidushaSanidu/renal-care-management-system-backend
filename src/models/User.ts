@@ -9,7 +9,9 @@ import crypto from "crypto";
 |--------------------------------------------------------------------------
 */
 
-export type UserRole = "nurse" | "doctor" | "admin";
+export type UserRole = "NURSE" | "DOCTOR" | "ADMIN";
+
+export const validUserRoles: UserRole[] = ["NURSE", "DOCTOR", "ADMIN"];
 
 export interface IUser extends Document {
   name: string;
@@ -93,7 +95,7 @@ const userSchema = new Schema<IUser>(
 
     role: {
       type: String,
-      enum: ["nurse", "doctor", "admin"],
+      enum: ["NURSE", "DOCTOR", "ADMIN"],
       required: true,
     },
 

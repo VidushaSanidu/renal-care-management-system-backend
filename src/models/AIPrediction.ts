@@ -9,6 +9,7 @@ import mongoose, {
 import notificationService from "../services/notificationService.js";
 import Patient from "./Patient.js";
 import User from "./User.js";
+import type { NotificationPriority, NotificationType } from "./Notification.js";
 
 /*
 |--------------------------------------------------------------------------
@@ -283,8 +284,8 @@ aiPredictionSchema.post(
 
       if (!patient) return;
 
-      let notificationType = "INFO";
-      let priority = "MEDIUM";
+      let notificationType: NotificationType = "INFO";
+      let priority: NotificationPriority = "MEDIUM";
 
       if (
         doc.prediction.severity === "HIGH" ||
@@ -303,12 +304,20 @@ aiPredictionSchema.post(
       }
 
       if (patient.assignedDoctor) {
+        const assignedDoctor = patient.assignedDoctor as
+          | Types.ObjectId
+          | { _id: Types.ObjectId };
+        const assignedDoctorId =
+          assignedDoctor instanceof Types.ObjectId
+            ? assignedDoctor
+            : assignedDoctor._id;
+
         await notificationService.createNotification({
           title: `AI Prediction: ${doc.predictionType}`,
           message: `${doc.prediction.outcome} (${doc.prediction.probability}%)`,
           type: notificationType,
           priority,
-          recipient: patient.assignedDoctor._id,
+          recipient: assignedDoctorId,
         });
       }
 

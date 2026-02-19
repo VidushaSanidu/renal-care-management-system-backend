@@ -1,7 +1,7 @@
 import MonthlyInvestigation from "../models/MonthlyInvestigation.js";
 import Patient from "../models/Patient.js";
 
-import { Types, FilterQuery } from "mongoose";
+import { Types, QueryFilter } from "mongoose";
 
 import type { IMonthlyInvestigation } from "../models/MonthlyInvestigation.js";
 import type { IPatient } from "../models/Patient.js";
@@ -68,7 +68,7 @@ class MonthlyInvestigationService {
 
     const skip = (page - 1) * limit;
 
-    const query: FilterQuery<IMonthlyInvestigation> = {
+    const query: QueryFilter<IMonthlyInvestigation> = {
       patient: patient._id,
     };
 
