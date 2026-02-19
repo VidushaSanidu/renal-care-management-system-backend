@@ -54,7 +54,7 @@ A comprehensive backend API for managing dialysis patients, sessions, investigat
 
    Edit the `.env` file with your configuration:
 
-   ```
+   ```env
    PORT=5000
    MONGODB_URI=mongodb://localhost:27017/renal-care
    JWT_SECRET=your-super-secret-jwt-key
@@ -89,13 +89,11 @@ Once the server is running, you can access the API documentation at:
 
 ## Default Users (after seeding)
 
-| Role   | Email                  | Password   | Description          |
-| ------ | ---------------------- | ---------- | -------------------- |
-| Admin  | admin@renalcare.com    | Admin123!  | System administrator |
-| Doctor | samantha@renalcare.com | Doctor123! | Nephrologist         |
-| Doctor | rajesh@renalcare.com   | Doctor123! | Nephrologist         |
-| Nurse  | priya@renalcare.com    | Nurse123!  | Dialysis nurse       |
-| Nurse  | kumari@renalcare.com   | Nurse123!  | Dialysis nurse       |
+| Role   | Email                 | Password   | Description          |
+| ------ | --------------------- | ---------- | -------------------- |
+| Admin  | `admin@renalcare.com` | admin123!  | System administrator |
+| Doctor | `doctor@renalcare.com`| doctor123! | Nephrologist         |
+| Nurse  | `nurse@renalcare.com` | nurse123!  | Dialysis nurse       |
 
 ## API Endpoints
 
@@ -172,45 +170,45 @@ Once the server is running, you can access the API documentation at:
 
 ## Database Schema
 
-### Users
+### Users Schema
 
 - Authentication and authorization
 - Role-based access control (admin, doctor, nurse)
 - Profile information and preferences
 
-### Patients
+### Patients Schema
 
 - Complete patient demographics
 - Medical history and diagnosis
 - Emergency contacts and insurance
 - Assigned doctor and current status
 
-### Dialysis Sessions
+### Dialysis Sessions Schema
 
 - Session details (date, duration, weights)
 - Vital signs and parameters
 - Complications and notes
 - Treatment adequacy metrics
 
-### Monthly Investigations
+### Monthly Investigations Schema
 
 - Laboratory results and values
 - Trend analysis and comparisons
 - Doctor notes and recommendations
 
-### Clinical Decisions
+### Clinical Decisions Schema
 
 - Decision types and priorities
 - Implementation status tracking
 - Related data and reasoning
 
-### AI Predictions
+### AI Predictions Schema
 
 - ML model predictions and confidence
 - Validation status and feedback
 - Recommendations and risk factors
 
-### Notifications
+### Notifications Schema
 
 - Real-time system notifications
 - Priority levels and categories
@@ -262,7 +260,7 @@ The API uses standardized error responses:
 
 ### Code Structure
 
-```
+```text
 backend/
 ├── config/          # Database and socket configuration
 ├── middleware/      # Authentication and error handling
@@ -299,6 +297,7 @@ npm test
    ```
 
 3. **Start the server**
+
    ```bash
    npm start
    ```
@@ -310,10 +309,6 @@ npm test
 3. Commit your changes
 4. Push to the branch
 5. Create a Pull Request
-
-## License
-
-This project is licensed under the MIT License.
 
 ## Support
 

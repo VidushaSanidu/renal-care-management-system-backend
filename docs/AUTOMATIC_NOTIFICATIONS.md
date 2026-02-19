@@ -2,13 +2,13 @@
 
 ## Overview
 
-The renal care management system automatically creates notifications for various critical scenarios to ensure patient safety and operational efficiency. This document outlines all automatic notification triggers implemented in the system.
+The Renal Care Management System automatically creates notifications for various critical scenarios to ensure patient safety and operational efficiency. This document outlines all automatic notification triggers implemented in the system.
 
-## 🚨 Critical Lab Value Notifications
+## Critical Lab Value Notifications
 
 **Triggered in:** `models/MonthlyInvestigation.js` (post-save hook)
 
-### Scenarios
+### Scenarios for Critical Lab Value Notifications
 
 1. **Critical Hemoglobin Levels**
    - **Trigger:** Hb < 7.0 g/dL or Hb > 18.0 g/dL
@@ -34,11 +34,11 @@ The renal care management system automatically creates notifications for various
    - **Type:** CRITICAL notification
    - **Action Required:** Yes
 
-## 🤖 AI Prediction Notifications
+## AI Prediction Notifications
 
 **Triggered in:** `models/AIPrediction.js` (post-save hook)
 
-### Scenarios
+### Scenarios for AI Prediction Notifications
 
 1. **High-Risk Predictions**
    - **Trigger:** Prediction severity = 'HIGH' OR probability > 80%
@@ -60,11 +60,11 @@ The renal care management system automatically creates notifications for various
 - Cardiovascular Events
 - Dialysis Adequacy Issues
 
-## 🏥 Dialysis Session Notifications
+## Dialysis Session Notifications
 
 **Triggered in:** `models/DialysisSession.js` (post-save hook)
 
-### Scenarios
+### Scenarios for Dialysis Session Notifications
 
 1. **Session Cancelled**
    - **Trigger:** Session status = 'CANCELLED'
@@ -96,11 +96,11 @@ The renal care management system automatically creates notifications for various
    - **Type:** INFO notification
    - **Priority:** MEDIUM
 
-## 👥 Patient Status Notifications
+## Patient Status Notifications
 
 **Triggered in:** `models/Patient.js` (post-save hook)
 
-### Scenarios
+### Scenarios for Patient Status Notifications
 
 1. **Status Changes**
    - **INACTIVE:** WARNING notification to assigned doctor + relevant staff
@@ -112,11 +112,11 @@ The renal care management system automatically creates notifications for various
    - **New Assignment:** INFO notification to new doctor
    - **Reassignment:** INFO notification to previous doctor about handover
 
-## 📋 Clinical Decision Notifications
+## Clinical Decision Notifications
 
 **Triggered in:** `models/ClinicalDecision.js` (post-save hook)
 
-### Scenarios
+### Scenarios for Clinical Decision Notifications
 
 1. **Decision Approved**
    - **Trigger:** Status changed to 'APPROVED'
@@ -143,51 +143,56 @@ The renal care management system automatically creates notifications for various
    - **Type:** INFO notification
    - **Priority:** LOW
 
-## ⏰ Scheduled Notifications
+## Scheduled Notifications
 
 **Managed by:** `services/scheduledNotificationService.js`
 
 ### Daily Notifications (8:00 AM)
 
-1. **Appointment Reminders**
-   - **Recipients:** Assigned doctors, Nurses
-   - **Type:** INFO notification
-   - **Priority:** MEDIUM
-   - **Content:** Tomorrow's dialysis sessions
+#### Appointment Reminders
+
+- **Recipients:** Assigned doctors, Nurses
+- **Type:** INFO notification
+- **Priority:** MEDIUM
+- **Content:** Tomorrow's dialysis sessions
 
 ### Bi-hourly Checks (8 AM - 6 PM)
 
-2. **Missed Session Alerts**
-   - **Trigger:** No session recorded for scheduled dialysis day
-   - **Recipients:** Assigned doctor, Nurses
-   - **Type:** WARNING notification
-   - **Priority:** HIGH
+#### Missed Session Alerts
+
+- **Trigger:** No session recorded for scheduled dialysis day
+- **Recipients:** Assigned doctor, Nurses
+- **Type:** WARNING notification
+- **Priority:** HIGH
 
 ### Weekly Notifications (Monday 9:00 AM)
 
-3. **Patient Review Reminders**
-   - **Recipients:** All doctors
-   - **Type:** INFO notification
-   - **Priority:** MEDIUM
-   - **Content:** Number of assigned active patients
+#### Patient Review Reminders
+
+- **Recipients:** All doctors
+- **Type:** INFO notification
+- **Priority:** MEDIUM
+- **Content:** Number of assigned active patients
 
 ### Daily Maintenance (7:00 AM)
 
-4. **Equipment Maintenance**
-   - **Schedule:** Weekly (Sundays)
-   - **Recipients:** Nurses
-   - **Type:** INFO notification
-   - **Priority:** MEDIUM
+#### Equipment Maintenance
+
+- **Schedule:** Weekly (Sundays)
+- **Recipients:** Nurses
+- **Type:** INFO notification
+- **Priority:** MEDIUM
 
 ### Every 4 Hours
 
-5. **Critical Lab Follow-ups**
-   - **Trigger:** Critical lab results from 3+ days ago
-   - **Recipients:** Assigned doctors
-   - **Type:** WARNING notification
-   - **Priority:** HIGH
+#### Critical Lab Follow-ups
 
-## 🔧 Implementation Details
+- **Trigger:** Critical lab results from 3+ days ago
+- **Recipients:** Assigned doctors
+- **Type:** WARNING notification
+- **Priority:** HIGH
+
+## Implementation Details
 
 ### Database Triggers
 
@@ -208,7 +213,7 @@ The renal care management system automatically creates notifications for various
 - **Priority-based** notification levels
 - **Rate limiting** on bulk notifications
 
-## 📊 Notification Categories
+## Notification Categories
 
 ### By Type
 
@@ -233,7 +238,7 @@ The renal care management system automatically creates notifications for various
 - **APPOINTMENT_REMINDER:** Scheduled appointments
 - **SYSTEM_ALERT:** System and equipment notifications
 
-## 🎯 Action Required Notifications
+## Action Required Notifications
 
 Certain notifications automatically set `actionRequired: true`:
 
@@ -244,7 +249,7 @@ Certain notifications automatically set `actionRequired: true`:
 - Clinical decisions needing review
 - Equipment maintenance reminders
 
-## 📈 Future Enhancements
+## Future Enhancements
 
 ### Planned Features
 
@@ -262,7 +267,7 @@ Certain notifications automatically set `actionRequired: true`:
 - **Email Summaries** for daily/weekly reports
 - **Audit Logging** for compliance and review
 
-## 🔐 Security & Compliance
+## Security & Compliance
 
 - **Role-based Access:** Notifications respect user roles and permissions
 - **Data Privacy:** No sensitive patient data in notification content
