@@ -1,18 +1,17 @@
-const request = require("supertest");
-const app = require("../server");
-const mongoose = require("mongoose");
-const { default: envConfig } = require("../config/env.config");
-const { env } = require("node:process");
+import request from "supertest";
+import app from "../server.js";
+import { connect, connection } from "mongoose";
+import envConfig from "../config/env.config.js";
 
 // Test database connection
 beforeAll(async () => {
   const url =
     envConfig.MONGODB_URI || "mongodb://localhost:27017/renal-care-test";
-  await mongoose.connect(url);
+  await connect(url);
 });
 
 afterAll(async () => {
-  await mongoose.connection.close();
+  await connection.close();
 });
 
 describe("API Health Check", () => {
@@ -97,38 +96,46 @@ describe("Error Handling", () => {
 
 describe("Database Models", () => {
   it("should validate required fields in Patient model", async () => {
-    const Patient = require("../models/Patient");
+    const Patient = require("../models/Patient.js");
 
     const patient = new Patient({});
 
     try {
       await patient.validate();
     } catch (error) {
-      expect(error.errors).toHaveProperty("name");
-      expect(error.errors).toHaveProperty("patientId");
-      expect(error.errors).toHaveProperty("age");
-      expect(error.errors).toHaveProperty("gender");
+      await expect(patient.validate()).rejects.toMatchObject({
+        errors: {
+          name: expect.anything(),
+          patientId: expect.anything(),
+          age: expect.anything(),
+          gender: expect.anything(),
+        },
+      });
     }
   });
 
   it("should validate required fields in User model", async () => {
-    const User = require("../models/User");
+    const User = require("../models/User.js");
 
     const user = new User({});
 
     try {
       await user.validate();
     } catch (error) {
-      expect(error.errors).toHaveProperty("name");
-      expect(error.errors).toHaveProperty("email");
-      expect(error.errors).toHaveProperty("password");
-      expect(error.errors).toHaveProperty("role");
+      await expect(user.validate()).rejects.toMatchObject({
+        errors: {
+          name: expect.anything(),
+          email: expect.anything(),
+          password: expect.anything(),
+          role: expect.anything(),
+        },
+      });
     }
   });
 });
 
 describe("Utility Functions", () => {
-  const ValidationUtils = require("../utils/validation");
+  const ValidationUtils = require("../utils/validation.js");
 
   it("should validate email format", () => {
     expect(ValidationUtils.isValidEmail("test@example.com")).toBe(true);
@@ -165,7 +172,7 @@ describe("Utility Functions", () => {
 });
 
 describe("Notification Service", () => {
-  const NotificationService = require("../services/notificationService");
+  const NotificationService = require("../services/notificationService.js");
 
   it("should create notification with required fields", async () => {
     const mockNotification = {

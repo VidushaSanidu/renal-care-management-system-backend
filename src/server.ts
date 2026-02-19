@@ -7,7 +7,7 @@ import { createServer } from "http";
 import dotenv from "dotenv";
 
 // Load environment variables
-dotenv.config();
+dotenv.config({ quiet: true });
 
 // Import routes
 import authRoutes from "./routes/authRoutes.js";

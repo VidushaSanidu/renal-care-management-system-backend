@@ -29,7 +29,7 @@
 
     /* Node */
     "resolveJsonModule": true,
-    "types": ["node"],
+    "types": ["node", "jest"],
 
     /* Speed */
     "incremental": true,
