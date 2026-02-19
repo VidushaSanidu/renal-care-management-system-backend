@@ -1,0 +1,42 @@
+version: "3.9"
+
+services:
+  backend:
+    image: node:22-alpine
+    container_name: renal-backend-dev
+
+    working_dir: /app
+
+    volumes:
+      - .:/app
+      - /app/node_modules
+
+    ports:
+      - "3000:3000"
+
+    env_file:
+      - .env
+
+    command: npm run dev
+
+    depends_on:
+      - mongodb
+
+    restart: unless-stopped
+
+
+  mongodb:
+    image: mongo:7
+    container_name: renal-mongodb-dev
+
+    ports:
+      - "27017:27017"
+
+    volumes:
+      - mongodb_data:/data/db
+
+    restart: unless-stopped
+
+
+volumes:
+  mongodb_data:

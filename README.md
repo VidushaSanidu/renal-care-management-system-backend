@@ -203,3 +203,13 @@ backend/
       ├── seeds/           # Database seeding scripts
       └── server.ts        # Main application file
 ```
+
+## Testing
+
+The backend server includes unit and integration tests using Jest. To run the tests, use the following command:
+
+```bash
+npm test
+# or using bun
+bun test
+```
