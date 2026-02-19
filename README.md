@@ -89,11 +89,11 @@ Once the server is running, you can access the API documentation at:
 
 ## Default Users (after seeding)
 
-| Role   | Email                 | Password   | Description          |
-| ------ | --------------------- | ---------- | -------------------- |
-| Admin  | `admin@renalcare.com` | admin123!  | System administrator |
-| Doctor | `doctor@renalcare.com`| doctor123! | Nephrologist         |
-| Nurse  | `nurse@renalcare.com` | nurse123!  | Dialysis nurse       |
+| Role   | Email                  | Password   | Description          |
+| ------ | ---------------------- | ---------- | -------------------- |
+| Admin  | `admin@renalcare.com`  | admin123!  | System administrator |
+| Doctor | `doctor@renalcare.com` | doctor123! | Nephrologist         |
+| Nurse  | `nurse@renalcare.com`  | nurse123!  | Dialysis nurse       |
 
 ## API Endpoints
 
