@@ -262,14 +262,15 @@ The API uses standardized error responses:
 
 ```text
 backend/
-├── config/          # Database and socket configuration
-├── middleware/      # Authentication and error handling
-├── models/          # Mongoose schemas
-├── routes/          # API route handlers
-├── services/        # Business logic services
-├── utils/           # Utility functions
-├── seeds/           # Database seeding scripts
-└── server.js        # Main application file
+   └── src/
+      ├── config/          # Database and socket configuration
+      ├── middleware/      # Authentication and error handling
+      ├── models/          # Mongoose schemas
+      ├── routes/          # API route handlers
+      ├── services/        # Business logic services
+      ├── utils/           # Utility functions
+      ├── seeds/           # Database seeding scripts
+      └── server.ts        # Main application file
 ```
 
 ## Testing
