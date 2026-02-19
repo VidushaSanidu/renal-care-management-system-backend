@@ -1,11 +1,13 @@
 const request = require("supertest");
 const app = require("../server");
 const mongoose = require("mongoose");
+const { default: envConfig } = require("../config/env.config");
+const { env } = require("node:process");
 
 // Test database connection
 beforeAll(async () => {
   const url =
-    process.env.MONGODB_URI || "mongodb://localhost:27017/renal-care-test";
+    envConfig.MONGODB_URI || "mongodb://localhost:27017/renal-care-test";
   await mongoose.connect(url);
 });
 
@@ -195,10 +197,10 @@ describe("Notification Service", () => {
 describe("Environment Variables", () => {
   it("should have required environment variables", () => {
     // These should be set in the test environment
-    process.env.JWT_SECRET = "test-secret";
-    process.env.MONGODB_URI = "mongodb://localhost:27017/renal-care-test";
+    envConfig.JWT_SECRET = "test-secret";
+    envConfig.MONGODB_URI = "mongodb://localhost:27017/renal-care-test";
 
-    expect(process.env.JWT_SECRET).toBeDefined();
-    expect(process.env.MONGODB_URI).toBeDefined();
+    expect(envConfig.JWT_SECRET).toBeDefined();
+    expect(envConfig.MONGODB_URI).toBeDefined();
   });
 });

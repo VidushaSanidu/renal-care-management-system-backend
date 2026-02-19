@@ -71,7 +71,7 @@ app.use(express.json());
 
 app.use(express.urlencoded({ extended: true }));
 
-if (process.env.NODE_ENV === "development") {
+if (envConfig.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
@@ -91,7 +91,7 @@ const swaggerOptions: swaggerJsdoc.Options = {
     },
     servers: [
       {
-        url: `http://localhost:${process.env.PORT ?? 5000}`,
+        url: `http://localhost:${envConfig.PORT}`,
       },
     ],
     components: {
@@ -177,12 +177,10 @@ app.use("*", (_req: Request, res: Response) => {
 |--------------------------------------------------------------------------
 */
 
-const PORT: number = Number(process.env.PORT) || 5000;
+server.listen(envConfig.PORT, () => {
+  console.log(`🚀 Server running on port ${envConfig.PORT}`);
 
-server.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-
-  console.log(`📚 Docs: http://localhost:${PORT}/api-docs`);
+  console.log(`📚 Docs: http://localhost:${envConfig.PORT}/api-docs`);
 
   console.log(`🏥 Renal Care Backend Ready`);
 });

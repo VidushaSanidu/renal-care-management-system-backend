@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from "express";
+import envConfig from "../config/env.config.js";
 
 /**
  * Custom error interface
@@ -164,7 +165,7 @@ const errorHandler = (
   /**
    * Development response
    */
-  if (process.env.NODE_ENV === "development") {
+  if (envConfig.NODE_ENV === "development") {
     return res.status(statusCode).json({
       success: false,
       error: {
