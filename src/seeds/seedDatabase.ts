@@ -61,52 +61,33 @@ async function createUsers() {
   const adminUser = await User.create({
     name: "System Administrator",
     email: "admin@renalcare.com",
-    password: "Admin123!",
-    role: "admin",
+    password: "admin123!",
+    role: "ADMIN",
   });
 
-  const doctor1 = await User.create({
-    name: "Dr. Samantha Perera",
-    email: "samantha@renalcare.com",
-    password: "Doctor123!",
-    role: "doctor",
-    specialization: "Nephrology",
+  const doctor = await User.create({
+    name: "Dr. Demo",
+    email: "demo.doctor@renalcare.com",
+    password: "doctor123!",
+    role: "DOCTOR",
+    specialization: "Demo Specialization",
     licenseNumber: "SL-DOC-001",
   });
 
-  const doctor2 = await User.create({
-    name: "Dr. Rajesh Fernando",
-    email: "rajesh@renalcare.com",
-    password: "Doctor123!",
-    role: "doctor",
-    specialization: "Nephrology",
-    licenseNumber: "SL-DOC-002",
-  });
-
-  const nurse1 = await User.create({
-    name: "Nurse Priya Silva",
-    email: "priya@renalcare.com",
-    password: "Nurse123!",
-    role: "nurse",
-    department: "Dialysis Unit",
-  });
-
-  const nurse2 = await User.create({
-    name: "Nurse Kumari Jayasinghe",
-    email: "kumari@renalcare.com",
-    password: "Nurse123!",
-    role: "nurse",
-    department: "Dialysis Unit",
+  const nurse = await User.create({
+    name: "Demo Nurse",
+    email: "demo.nurse@renalcare.com",
+    password: "nurse123!",
+    role: "NURSE",
+    department: "Demo",
   });
 
   console.log("Users created");
 
   return {
     adminUser,
-    doctor1,
-    doctor2,
-    nurse1,
-    nurse2,
+    doctor,
+    nurse,
   };
 }
 
@@ -199,7 +180,7 @@ async function createPredictions(patients: any[]) {
 |--------------------------------------------------------------------------
 */
 
-async function createNotifications(adminUser: any, doctor1: any) {
+async function createNotifications(adminUser: any, doctor: any) {
   await Notification.create({
     title: "System initialized",
 
@@ -211,7 +192,7 @@ async function createNotifications(adminUser: any, doctor1: any) {
 
     category: "SYSTEM_ALERT",
 
-    recipient: doctor1._id,
+    recipient: doctor._id,
 
     createdBy: adminUser._id,
   });
@@ -229,30 +210,20 @@ async function seedDatabase(): Promise<void> {
   try {
     await clearDatabase();
 
-    const { adminUser, doctor1, doctor2, nurse1, nurse2 } = await createUsers();
+    const { adminUser, doctor, nurse } = await createUsers();
 
-    const patients = await createPatients(doctor1, doctor2);
+    const patients = await createPatients(doctor, doctor);
 
     await createPredictions(patients);
 
-    await createNotifications(adminUser, doctor1);
+    await createNotifications(adminUser, doctor);
 
     console.log("Database seeded successfully");
 
-    console.log(`
-Login credentials:
-
-Admin:
-admin@renalcare.com / Admin123!
-
-Doctor:
-samantha@renalcare.com / Doctor123!
-rajesh@renalcare.com / Doctor123!
-
-Nurse:
-priya@renalcare.com / Nurse123!
-kumari@renalcare.com / Nurse123!
-`);
+    console.log("Login credentials:");
+    console.log("Admin: admin@renalcare.com / admin123!");
+    console.log("Doctor: demo.doctor@renalcare.com / doctor123!");
+    console.log("Nurse: demo.nurse@renalcare.com / nurse123!");
   } catch (error) {
     console.error("Seed error:", error);
   }
