@@ -10,7 +10,6 @@ This is the backend server for the Renal Care Management System. It is built usi
 - **Monthly Investigations**: Laboratory results tracking and analysis
 - **Clinical Decisions**: Decision support system for medical staff
 - **AI Predictions**: Machine learning predictions for patient outcomes
-- **Real-time Notifications**: Socket.IO based notification system
 - **Dashboard & Reports**: Comprehensive analytics and reporting
 - **RESTful API**: Well-documented API endpoints with Swagger
 
@@ -21,7 +20,6 @@ This is the backend server for the Renal Care Management System. It is built usi
 - **MongoDB** - Database
 - **Mongoose** - ODM for MongoDB
 - **JWT** - Authentication
-- **Socket.IO** - Real-time communication (In Development)
 - **Swagger** - API documentation
 - **bcryptjs** - Password hashing
 
@@ -194,7 +192,7 @@ GET /api/reports/investigation-summary - Get investigation summary
 ```text
 backend/
    └── src/
-      ├── config/          # Database and socket configuration
+      ├── config/          # Database and Env configuration
       ├── middleware/      # Authentication and error handling
       ├── models/          # Mongoose schemas
       ├── routes/          # API route handlers
