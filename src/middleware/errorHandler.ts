@@ -1,16 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import envConfig from "../config/env.config.js";
-
-/**
- * Custom error interface
- */
-interface AppError extends Error {
-  statusCode?: number;
-  code?: number | string;
-  keyValue?: Record<string, unknown>;
-  errors?: Record<string, any>;
-  isOperational?: boolean;
-}
+import type { AppError } from "../types/error.js";
 
 /**
  * Global error handler middleware

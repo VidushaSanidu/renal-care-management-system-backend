@@ -1,15 +1,9 @@
 import { Request, Response, NextFunction } from "express";
-import jwt, { JwtPayload } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 import Patient from "../models/Patient.js";
 import envConfig from "../config/env.config.js";
-
-/**
- * JWT payload interface
- */
-interface TokenPayload extends JwtPayload {
-  id: string;
-}
+import type { TokenPayload } from "../types/auth.js";
 
 /**
  * Protect routes middleware

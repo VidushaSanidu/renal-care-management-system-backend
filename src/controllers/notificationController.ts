@@ -1,18 +1,7 @@
 import { Request, Response } from "express";
 import { validationResult } from "express-validator";
 import notificationService from "../services/notificationService.js";
-
-/**
- * Query options type
- */
-interface NotificationQueryOptions {
-  page?: number;
-  limit?: number;
-  type?: string;
-  category?: string;
-  priority?: string;
-  isRead?: boolean;
-}
+import type { NotificationQueryOptions } from "../types/notification.js";
 
 class NotificationController {
   /**

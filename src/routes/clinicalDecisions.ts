@@ -10,13 +10,6 @@ const router: Router = express.Router();
 // Types
 // =========================
 
-interface AuthRequest extends Request {
-  user: {
-    id: string;
-    role: string;
-  };
-}
-
 interface DecisionQuery {
   patient?: string;
   type?: string;
