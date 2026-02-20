@@ -1,10 +1,8 @@
+import type { Types, QueryFilter } from "mongoose";
+
 import MonthlyInvestigation from "../models/MonthlyInvestigation.js";
 import Patient from "../models/Patient.js";
-
-import { Types, QueryFilter } from "mongoose";
-
 import type { IMonthlyInvestigation } from "../models/MonthlyInvestigation.js";
-import type { IPatient } from "../models/Patient.js";
 
 /*
 |--------------------------------------------------------------------------
@@ -19,7 +17,7 @@ export interface InvestigationQueryParams {
   endDate?: string;
 }
 
-export interface PaginationResult<T> {
+interface PaginationResult<T> {
   investigations: T[];
   total: number;
   page: number;

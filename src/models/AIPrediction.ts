@@ -1,12 +1,8 @@
-import mongoose, {
-  Schema,
-  Types,
-  Document,
-  Model,
-  HydratedDocument,
-} from "mongoose";
+import type { Document, Model, HydratedDocument } from "mongoose";
+import mongoose, { Schema, Types } from "mongoose";
 
 import notificationService from "../services/notificationService.js";
+
 import Patient from "./Patient.js";
 import User from "./User.js";
 import type { NotificationPriority, NotificationType } from "./Notification.js";
@@ -17,16 +13,11 @@ import type { NotificationPriority, NotificationType } from "./Notification.js";
 |--------------------------------------------------------------------------
 */
 
-export type PredictionSeverity = "LOW" | "MODERATE" | "HIGH" | "CRITICAL";
+type PredictionSeverity = "LOW" | "MODERATE" | "HIGH" | "CRITICAL";
 
-export type PredictionTimeframe =
-  | "IMMEDIATE"
-  | "HOURS"
-  | "DAYS"
-  | "WEEKS"
-  | "MONTHS";
+type PredictionTimeframe = "IMMEDIATE" | "HOURS" | "DAYS" | "WEEKS" | "MONTHS";
 
-export type PredictionType =
+type PredictionType =
   | "HYPOTENSION_RISK"
   | "FLUID_OVERLOAD"
   | "ACCESS_FAILURE"
@@ -49,7 +40,7 @@ export type PredictionType =
 |--------------------------------------------------------------------------
 */
 
-export interface IAIPrediction extends Document {
+interface IAIPrediction extends Document {
   predictionId: string;
 
   patient: Types.ObjectId;

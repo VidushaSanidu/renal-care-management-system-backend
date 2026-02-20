@@ -1,8 +1,8 @@
-import express, { Router } from "express";
+import type { Router } from "express";
+import express from "express";
 
 import userController from "../controllers/userController.js";
 import userValidation from "../validations/userValidation.js";
-
 import { protect, authorize } from "../middleware/auth.js";
 
 const router: Router = express.Router();

@@ -1,4 +1,5 @@
-import axios, { AxiosError } from "axios";
+import type { AxiosError } from "axios";
+import axios from "axios";
 
 import Patient from "../models/Patient.js";
 import MonthlyInvestigation from "../models/MonthlyInvestigation.js";
@@ -22,6 +23,22 @@ interface MLHealthResponse {
   status: "online" | "offline";
   serverResponse?: unknown;
   error?: string;
+}
+
+interface URRPredictionData {
+  patient_id: string;
+  albumin: number;
+  hb: number;
+  s_ca: number;
+  serum_na_pre_hd: number;
+  urr: number;
+  serum_k_pre_hd: number;
+  serum_k_post_hd: number;
+  bu_pre_hd: number;
+  bu_post_hd: number;
+  scr_pre_hd: number;
+  scr_post_hd: number;
+  urr_diff: number;
 }
 
 /*
@@ -195,26 +212,28 @@ class AIPredictionService {
 
       const currentURR = ((buPreHD - buPostHD) / buPreHD) * 100;
 
-      const predictionData: any = {
+      const predictionData: URRPredictionData = {
         patient_id: patientId,
 
-        albumin: latestInvestigation.albumin,
-        hb: latestInvestigation.hb,
+        albumin: latestInvestigation.albumin!,
+        hb: latestInvestigation.hb!,
 
-        s_ca: latestInvestigation.sCa,
+        s_ca: latestInvestigation.sCa!,
 
-        serum_na_pre_hd: latestInvestigation.serumNaPreHD,
+        serum_na_pre_hd: latestInvestigation.serumNaPreHD!,
 
         urr: Number(currentURR.toFixed(2)),
 
-        serum_k_pre_hd: latestInvestigation.serumKPreHD,
-        serum_k_post_hd: latestInvestigation.serumKPostHD,
+        serum_k_pre_hd: latestInvestigation.serumKPreHD!,
+        serum_k_post_hd: latestInvestigation.serumKPostHD!,
 
-        bu_pre_hd: latestInvestigation.bu_pre_hd,
-        bu_post_hd: latestInvestigation.bu_post_hd,
+        bu_pre_hd: latestInvestigation.bu_pre_hd!,
+        bu_post_hd: latestInvestigation.bu_post_hd!,
 
-        scr_pre_hd: latestInvestigation.scrPreHD,
-        scr_post_hd: latestInvestigation.scrPostHD,
+        scr_pre_hd: latestInvestigation.scrPreHD!,
+        scr_post_hd: latestInvestigation.scrPostHD!,
+
+        urr_diff: 0,
       };
 
       const previousInvestigation = await MonthlyInvestigation.findOne({
@@ -265,9 +284,12 @@ class AIPredictionService {
       if (error instanceof Error)
         throw new Error(
           `Failed to prepare URR prediction data: ${error.message}`,
+          { cause: error },
         );
 
-      throw new Error("Failed to prepare URR prediction data");
+      throw new Error("Failed to prepare URR prediction data", {
+        cause: error,
+      });
     }
   }
 
@@ -410,9 +432,11 @@ class AIPredictionService {
       };
     } catch (error: unknown) {
       if (error instanceof Error)
-        throw new Error(`Prediction preparation failed: ${error.message}`);
+        throw new Error(`Prediction preparation failed: ${error.message}`, {
+          cause: error,
+        });
 
-      throw new Error("Prediction preparation failed");
+      throw new Error("Prediction preparation failed", { cause: error });
     }
   }
 
@@ -508,7 +532,7 @@ class AIPredictionService {
 
   private static handleAxiosError(err: unknown): Error {
     if (axios.isAxiosError(err)) {
-      const error = err as AxiosError<any>;
+      const error = err as AxiosError<{ message?: string }>;
 
       if (error.response) {
         return new Error(

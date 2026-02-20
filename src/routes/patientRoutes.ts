@@ -1,11 +1,11 @@
-import express, { Router } from "express";
+import type { Router } from "express";
+import express from "express";
 
 import {
   protect,
   authorize,
   checkPatientAssignment,
 } from "../middleware/auth.js";
-
 import {
   validateCreatePatient,
   validateUpdatePatient,
@@ -13,7 +13,6 @@ import {
   validateSearchQuery,
   validatePatientId,
 } from "../middleware/patientValidation.js";
-
 import {
   getPatients,
   getPatientById,

@@ -1,4 +1,5 @@
-import express, { Router, Request, Response } from "express";
+import type { Router, Request, Response } from "express";
+import express from "express";
 
 import ClinicalDecision from "../models/ClinicalDecision.js";
 import Patient from "../models/Patient.js";
@@ -16,6 +17,13 @@ interface DecisionQuery {
   status?: string;
   priority?: string;
   doctorId?: string;
+}
+
+interface ImplementDecisionUpdate {
+  status: string;
+  implementedBy: string;
+  implementedAt: Date;
+  notes?: string;
 }
 
 // =========================
@@ -60,9 +68,9 @@ router.get("/", protect, async (req: Request, res: Response) => {
         pages: Math.ceil(total / limit),
       },
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     res.status(500).json({
-      message: error.message,
+      message: error instanceof Error ? error.message : "Unknown error",
     });
   }
 });
@@ -89,9 +97,9 @@ router.get("/:id", protect, async (req: Request, res: Response) => {
       });
 
     res.json(decision);
-  } catch (error: any) {
+  } catch (error: unknown) {
     res.status(500).json({
-      message: error.message,
+      message: error instanceof Error ? error.message : "Unknown error",
     });
   }
 });
@@ -123,9 +131,9 @@ router.post("/", protect, async (req: Request, res: Response) => {
       .populate("doctorId", "name");
 
     res.status(201).json(populatedDecision);
-  } catch (error: any) {
+  } catch (error: unknown) {
     res.status(400).json({
-      message: error.message,
+      message: error instanceof Error ? error.message : "Unknown error",
     });
   }
 });
@@ -161,9 +169,9 @@ router.put("/:id", protect, async (req: Request, res: Response) => {
       .populate("implementedBy", "name");
 
     res.json(updatedDecision);
-  } catch (error: any) {
+  } catch (error: unknown) {
     res.status(400).json({
-      message: error.message,
+      message: error instanceof Error ? error.message : "Unknown error",
     });
   }
 });
@@ -191,9 +199,9 @@ router.delete("/:id", protect, async (req: Request, res: Response) => {
     res.json({
       message: "Clinical decision deleted successfully",
     });
-  } catch (error: any) {
+  } catch (error: unknown) {
     res.status(500).json({
-      message: error.message,
+      message: error instanceof Error ? error.message : "Unknown error",
     });
   }
 });
@@ -211,7 +219,7 @@ router.patch("/:id/implement", protect, async (req: Request, res: Response) => {
         message: "Clinical decision not found",
       });
 
-    const updateData: any = {
+    const updateData: ImplementDecisionUpdate = {
       status: "implemented",
       implementedBy: req.user.id,
       implementedAt: new Date(),
@@ -229,9 +237,9 @@ router.patch("/:id/implement", protect, async (req: Request, res: Response) => {
       .populate("implementedBy", "name");
 
     res.json(updatedDecision);
-  } catch (error: any) {
+  } catch (error: unknown) {
     res.status(400).json({
-      message: error.message,
+      message: error instanceof Error ? error.message : "Unknown error",
     });
   }
 });

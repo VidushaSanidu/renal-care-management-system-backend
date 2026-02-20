@@ -1,8 +1,8 @@
+import type { QueryFilter } from "mongoose";
+import { Types } from "mongoose";
+
 import Notification from "../models/Notification.js";
 import User from "../models/User.js";
-
-import { Types, QueryFilter } from "mongoose";
-
 import type { INotification } from "../models/Notification.js";
 
 /*
@@ -11,7 +11,7 @@ import type { INotification } from "../models/Notification.js";
 |--------------------------------------------------------------------------
 */
 
-export interface NotificationOptions {
+interface NotificationOptions {
   page?: number;
   limit?: number;
   type?: string;
@@ -20,7 +20,7 @@ export interface NotificationOptions {
   isRead?: boolean;
 }
 
-export interface BroadcastNotificationInput {
+interface BroadcastNotificationInput {
   title: string;
   message: string;
   type: "INFO" | "WARNING" | "CRITICAL" | "SUCCESS";

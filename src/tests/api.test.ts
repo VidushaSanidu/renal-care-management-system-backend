@@ -1,7 +1,13 @@
 import request from "supertest";
-import app from "../server.js";
 import { connect, connection } from "mongoose";
+import { Types } from "mongoose";
+
+import app from "../server.js";
 import envConfig from "../config/env.config.js";
+import Patient from "../models/Patient.js";
+import User from "../models/User.js";
+import ValidationUtils from "../utils/validation.js";
+import NotificationService from "../services/notificationService.js";
 
 // Test database connection
 beforeAll(async () => {
@@ -96,13 +102,12 @@ describe("Error Handling", () => {
 
 describe("Database Models", () => {
   it("should validate required fields in Patient model", async () => {
-    const Patient = require("../models/Patient.js");
-
     const patient = new Patient({});
 
     try {
       await patient.validate();
     } catch (error) {
+      console.error("Validation error:", error);
       await expect(patient.validate()).rejects.toMatchObject({
         errors: {
           name: expect.anything(),
@@ -115,13 +120,12 @@ describe("Database Models", () => {
   });
 
   it("should validate required fields in User model", async () => {
-    const User = require("../models/User.js");
-
     const user = new User({});
 
     try {
       await user.validate();
     } catch (error) {
+      console.error("Validation error:", error);
       await expect(user.validate()).rejects.toMatchObject({
         errors: {
           name: expect.anything(),
@@ -135,8 +139,6 @@ describe("Database Models", () => {
 });
 
 describe("Utility Functions", () => {
-  const ValidationUtils = require("../utils/validation.js");
-
   it("should validate email format", () => {
     expect(ValidationUtils.isValidEmail("test@example.com")).toBe(true);
     expect(ValidationUtils.isValidEmail("invalid-email")).toBe(false);
@@ -172,29 +174,33 @@ describe("Utility Functions", () => {
 });
 
 describe("Notification Service", () => {
-  const NotificationService = require("../services/notificationService.js");
-
   it("should create notification with required fields", async () => {
     const mockNotification = {
-      userId: "507f1f77bcf86cd799439011",
+      _id: new Types.ObjectId(),
+      recipient: new Types.ObjectId(),
       title: "Test Notification",
       message: "This is a test notification",
-      type: "info",
-      category: "system",
-      priority: "medium",
-    };
+      type: "INFO",
+      category: "SYSTEM_ALERT",
+      priority: "MEDIUM",
+      isRead: false,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      isExpired: false,
+    } as any;
 
-    // Mock the notification creation
     const createNotificationSpy = jest.spyOn(
       NotificationService,
       "createNotification",
     );
+
     createNotificationSpy.mockResolvedValue(mockNotification);
 
     const result =
       await NotificationService.createNotification(mockNotification);
 
     expect(result).toEqual(mockNotification);
+
     expect(createNotificationSpy).toHaveBeenCalledWith(mockNotification);
 
     createNotificationSpy.mockRestore();

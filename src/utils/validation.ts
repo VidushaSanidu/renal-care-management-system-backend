@@ -2,17 +2,17 @@
  * Validation utilities for the renal care management system
  */
 
-export interface ValidationResult {
+interface ValidationResult {
   isValid: boolean;
   messages: string[];
 }
 
-export interface BloodPressure {
+interface BloodPressure {
   systolic?: number;
   diastolic?: number;
 }
 
-export interface DialysisSessionValidationInput {
+interface DialysisSessionValidationInput {
   patient?: string;
   date?: Date;
   preWeight?: number;
@@ -22,21 +22,7 @@ export interface DialysisSessionValidationInput {
   bloodPressure?: BloodPressure;
 }
 
-export interface InvestigationValidationInput {
-  patient?: string;
-  date?: Date;
-  [key: string]: unknown;
-}
-
-export interface ClinicalDecisionValidationInput {
-  patient?: string;
-  type?: string;
-  decision?: string;
-  priority?: string;
-  status?: string;
-}
-
-export interface AIPredictionValidationInput {
+interface AIPredictionValidationInput {
   patient?: string;
   predictionType?: string;
   modelUsed?: string;

@@ -1,5 +1,6 @@
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import { validationResult } from "express-validator";
+
 import notificationService from "../services/notificationService.js";
 import type { NotificationQueryOptions } from "../types/notification.js";
 

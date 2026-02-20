@@ -1,5 +1,6 @@
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import { validationResult } from "express-validator";
+
 import PatientService from "../services/patientService.js";
 import userService from "../services/userService.js";
 

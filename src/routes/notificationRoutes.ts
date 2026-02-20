@@ -1,8 +1,8 @@
-import express, { Router } from "express";
+import type { Router } from "express";
+import express from "express";
 
 import notificationController from "../controllers/notificationController.js";
 import * as notificationValidation from "../middleware/notificationValidation.js";
-
 import * as auth from "../middleware/auth.js";
 
 const router: Router = express.Router();

@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import type { Document } from "mongoose";
 import dotenv from "dotenv";
 
 import User from "../models/User.js";
@@ -97,7 +98,7 @@ async function createUsers() {
 |--------------------------------------------------------------------------
 */
 
-async function createPatients(doctor1: any, doctor2: any) {
+async function createPatients(doctor1: Document, doctor2: Document) {
   const patients = await Patient.insertMany([
     {
       name: "Nimal Wijesekera",
@@ -138,7 +139,7 @@ async function createPatients(doctor1: any, doctor2: any) {
 |--------------------------------------------------------------------------
 */
 
-async function createPredictions(patients: any[]) {
+async function createPredictions(patients: Document[]) {
   for (const patient of patients) {
     await AIPrediction.create({
       patient: patient._id,
@@ -180,7 +181,7 @@ async function createPredictions(patients: any[]) {
 |--------------------------------------------------------------------------
 */
 
-async function createNotifications(adminUser: any, doctor: any) {
+async function createNotifications(adminUser: Document, doctor: Document) {
   await Notification.create({
     title: "System initialized",
 
@@ -210,7 +211,7 @@ async function seedDatabase(): Promise<void> {
   try {
     await clearDatabase();
 
-    const { adminUser, doctor, nurse } = await createUsers();
+    const { adminUser, doctor } = await createUsers();
 
     const patients = await createPatients(doctor, doctor);
 

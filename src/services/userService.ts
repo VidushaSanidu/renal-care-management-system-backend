@@ -1,5 +1,7 @@
-import User, { IUser, UserRole } from "../models/User.js";
 import { Types } from "mongoose";
+
+import type { IUser, UserRole } from "../models/User.js";
+import User from "../models/User.js";
 
 /*
 |--------------------------------------------------------------------------
@@ -7,7 +9,7 @@ import { Types } from "mongoose";
 |--------------------------------------------------------------------------
 */
 
-export interface GetUsersQuery {
+interface GetUsersQuery {
   page?: number;
   limit?: number;
   role?: UserRole;
@@ -15,7 +17,7 @@ export interface GetUsersQuery {
   search?: string;
 }
 
-export interface CreateUserInput {
+interface CreateUserInput {
   name: string;
   email: string;
   password: string;
@@ -26,7 +28,7 @@ export interface CreateUserInput {
   specialization?: string;
 }
 
-export interface UpdateUserInput {
+interface UpdateUserInput {
   name?: string;
   email?: string;
   role?: UserRole;

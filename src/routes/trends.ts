@@ -1,8 +1,8 @@
-import express, { Router, Request, Response } from "express";
+import type { Router, Request, Response } from "express";
+import express from "express";
 
 import Patient from "../models/Patient.js";
 import MonthlyInvestigation from "../models/MonthlyInvestigation.js";
-
 import { protect, authorize } from "../middleware/auth.js";
 
 const router: Router = express.Router();
@@ -15,7 +15,7 @@ router.get(
   protect,
   authorize("doctor", "nurse"),
   async (
-    req: Request<{ patientId: string }, any, any, { months?: string }>,
+    req: Request<{ patientId: string }, unknown, unknown, { months?: string }>,
     res: Response,
   ) => {
     try {

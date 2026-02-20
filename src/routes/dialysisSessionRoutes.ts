@@ -1,8 +1,8 @@
-import express, { Router } from "express";
+import type { Router } from "express";
+import express from "express";
 
 import dialysisSessionController from "../controllers/dialysisSessionController.js";
 import dialysisSessionValidation from "../validations/dialysisSessionValidation.js";
-
 import { protect, authorize } from "../middleware/auth.js";
 
 const router: Router = express.Router();

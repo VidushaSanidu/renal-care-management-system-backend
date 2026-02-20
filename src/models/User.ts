@@ -1,7 +1,8 @@
-import mongoose, { Schema, Document, Model, HydratedDocument } from "mongoose";
-
-import bcrypt from "bcryptjs";
 import crypto from "crypto";
+
+import type { Document, Model, HydratedDocument } from "mongoose";
+import mongoose, { Schema } from "mongoose";
+import bcrypt from "bcryptjs";
 
 /*
 |--------------------------------------------------------------------------

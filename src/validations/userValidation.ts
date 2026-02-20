@@ -1,4 +1,5 @@
-import { body, ValidationChain } from "express-validator";
+import type { ValidationChain } from "express-validator";
+import { body } from "express-validator";
 
 type UserValidationType = {
   createUser: ValidationChain[];

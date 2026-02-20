@@ -1,10 +1,5 @@
-import mongoose, {
-  Schema,
-  Types,
-  Document,
-  Model,
-  HydratedDocument,
-} from "mongoose";
+import type { Types, Document, Model, HydratedDocument } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 import notificationService from "../services/notificationService.js";
 

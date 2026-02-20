@@ -1,5 +1,6 @@
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import { validationResult } from "express-validator";
+
 import monthlyInvestigationService from "../services/monthlyInvestigationService.js";
 import type { InvestigationQueryParams } from "../services/monthlyInvestigationService.js";
 import type { IMonthlyInvestigation } from "../models/MonthlyInvestigation.js";

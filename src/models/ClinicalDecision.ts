@@ -1,12 +1,8 @@
-import mongoose, {
-  Schema,
-  Types,
-  Document,
-  Model,
-  HydratedDocument,
-} from "mongoose";
+import type { Types, Document, Model, HydratedDocument } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 import notificationService from "../services/notificationService.js";
+
 import Patient from "./Patient.js";
 import User from "./User.js";
 
@@ -16,7 +12,7 @@ import User from "./User.js";
 |--------------------------------------------------------------------------
 */
 
-export type DecisionStatus =
+type DecisionStatus =
   | "DRAFT"
   | "PENDING_REVIEW"
   | "APPROVED"
@@ -24,7 +20,7 @@ export type DecisionStatus =
   | "MODIFIED"
   | "CANCELLED";
 
-export interface IClinicalDecision extends Document {
+interface IClinicalDecision extends Document {
   decisionId: string;
 
   patient: Types.ObjectId;

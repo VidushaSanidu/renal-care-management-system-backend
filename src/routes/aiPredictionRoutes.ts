@@ -1,9 +1,8 @@
-import express, { Router } from "express";
+import type { Router } from "express";
+import express from "express";
 
 import { protect, authorize } from "../middleware/auth.js";
-
 import { validatePatientIdParam } from "../middleware/aiPredictionValidation.js";
-
 import {
   predictHemoglobin,
   predictURR,

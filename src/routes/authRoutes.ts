@@ -1,4 +1,5 @@
-import express, { Router } from "express";
+import type { Router } from "express";
+import express from "express";
 
 import authController from "../controllers/authController.js";
 import authValidation from "../validations/authValidation.js";

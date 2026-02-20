@@ -1,11 +1,12 @@
-import cron, { ScheduledTask } from "node-cron";
+import type { ScheduledTask } from "node-cron";
+import cron from "node-cron";
 
-import notificationService from "./notificationService.js";
-
-import Patient from "../models/Patient.js";
+import Patient, { type IPatient } from "../models/Patient.js";
 import DialysisSession from "../models/DialysisSession.js";
 import MonthlyInvestigation from "../models/MonthlyInvestigation.js";
 import User from "../models/User.js";
+
+import notificationService from "./notificationService.js";
 
 /*
 |--------------------------------------------------------------------------
@@ -311,7 +312,7 @@ class ScheduledNotificationService {
       }).populate("patient");
 
       for (const lab of labs) {
-        const patient = lab.patient as any;
+        const patient = lab.patient as unknown as IPatient;
 
         if (!patient?.assignedDoctor) continue;
 

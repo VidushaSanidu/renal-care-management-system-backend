@@ -1,5 +1,6 @@
-import Patient from "../models/Patient.js";
 import { Types } from "mongoose";
+
+import Patient from "../models/Patient.js";
 import type { IUser } from "../models/User.js";
 
 /*
@@ -8,13 +9,13 @@ import type { IUser } from "../models/User.js";
 |--------------------------------------------------------------------------
 */
 
-export interface AddNoteInput {
+interface AddNoteInput {
   content: string;
   addedBy: Types.ObjectId | string;
   type?: "GENERAL" | "MEDICAL" | "ADMINISTRATIVE";
 }
 
-export interface PatientSearchResult {
+interface PatientSearchResult {
   patientId: string;
   name: string;
   gender: string;

@@ -1,9 +1,11 @@
-import express, { Application, Request, Response } from "express";
+import { createServer } from "http";
+
+import type { Application, Request, Response } from "express";
+import express from "express";
 import cors from "cors";
 import morgan from "morgan";
 import swaggerJsdoc from "swagger-jsdoc";
 import swaggerUi from "swagger-ui-express";
-import { createServer } from "http";
 import dotenv from "dotenv";
 
 // Load environment variables
@@ -19,11 +21,7 @@ import clinicalDecisionRoutes from "./routes/clinicalDecisions.js";
 import notificationRoutes from "./routes/notificationRoutes.js";
 import aiPredictionRoutes from "./routes/aiPredictionRoutes.js";
 import trendsRoutes from "./routes/trends.js";
-
-// Import middleware
 import errorHandler from "./middleware/errorHandler.js";
-
-// Import utilities
 import { connectDB } from "./config/database.js";
 import ScheduledNotificationService from "./services/scheduledNotificationService.js";
 import envConfig from "./config/env.config.js";

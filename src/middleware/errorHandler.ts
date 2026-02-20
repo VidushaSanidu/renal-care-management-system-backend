@@ -1,4 +1,5 @@
-import { Request, Response, NextFunction } from "express";
+import type { Request, Response, NextFunction } from "express";
+
 import envConfig from "../config/env.config.js";
 import type { AppError } from "../types/error.js";
 
@@ -9,7 +10,7 @@ const errorHandler = (
   err: AppError,
   req: Request,
   res: Response,
-  next: NextFunction,
+  _next: NextFunction,
 ): Response => {
   let error: AppError = { ...err };
   error.message = err.message;
@@ -35,15 +36,12 @@ const errorHandler = (
     const field = Object.keys(err.keyValue)[0];
     const value = err.keyValue[field];
 
-    let message = "Duplicate field value";
-
-    if (field === "email") {
-      message = "Email already exists";
-    } else if (field === "patientId") {
-      message = "Patient ID already exists";
-    } else {
-      message = `${field} '${value}' already exists`;
-    }
+    const message =
+      field === "email"
+        ? "Email already exists"
+        : field === "patientId"
+          ? "Patient ID already exists"
+          : `${field} '${value}' already exists`;
 
     error = {
       message,
@@ -57,7 +55,11 @@ const errorHandler = (
    */
   if (err.name === "ValidationError" && err.errors) {
     const message = Object.values(err.errors)
-      .map((val: any) => val.message)
+      .filter(
+        (val): val is { message: string } =>
+          typeof (val as { message?: string }).message === "string",
+      )
+      .map((val) => val.message)
       .join(", ");
 
     error = {

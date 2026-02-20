@@ -1,8 +1,8 @@
-import express, { Router } from "express";
+import type { Router } from "express";
+import express from "express";
 
 import monthlyInvestigationController from "../controllers/monthlyInvestigationController.js";
 import monthlyInvestigationValidation from "../validations/monthlyInvestigationValidation.js";
-
 import { protect, authorize } from "../middleware/auth.js";
 
 const router: Router = express.Router();

@@ -1,8 +1,9 @@
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import { validationResult } from "express-validator";
+
 import dialysisSessionService from "../services/dialysisSessionService.js";
 import type { SessionQueryParams } from "../services/dialysisSessionService.js";
-import { IDialysisSession } from "../models/DialysisSession.js";
+import type { IDialysisSession } from "../models/DialysisSession.js";
 
 class DialysisSessionController {
   /**

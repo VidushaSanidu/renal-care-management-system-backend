@@ -1,4 +1,5 @@
-import mongoose, { Schema, Types, Document, Model } from "mongoose";
+import type { Types, Model } from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 /*
 |--------------------------------------------------------------------------
@@ -24,7 +25,7 @@ export type RelatedEntityType =
   | "MonthlyInvestigation"
   | "User";
 
-export interface INotification extends Document {
+export interface INotification {
   title: string;
 
   message: string;

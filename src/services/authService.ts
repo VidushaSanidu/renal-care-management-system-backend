@@ -1,10 +1,10 @@
-import jwt from "jsonwebtoken";
 import crypto from "crypto";
 
-import User from "../models/User.js";
-
-import type { IUser } from "../models/User.js";
+import jwt from "jsonwebtoken";
 import type { HydratedDocument, Types } from "mongoose";
+
+import User from "../models/User.js";
+import type { IUser } from "../models/User.js";
 import envConfig from "../config/env.config.js";
 
 /*
@@ -13,7 +13,7 @@ import envConfig from "../config/env.config.js";
 |--------------------------------------------------------------------------
 */
 
-export interface AuthResponse {
+interface AuthResponse {
   token: string;
   user: {
     id: Types.ObjectId;
@@ -26,7 +26,7 @@ export interface AuthResponse {
   };
 }
 
-export interface RegisterInput {
+interface RegisterInput {
   name: string;
   email: string;
   password: string;

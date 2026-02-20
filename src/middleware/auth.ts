@@ -1,5 +1,6 @@
-import { Request, Response, NextFunction } from "express";
+import type { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
+
 import User from "../models/User.js";
 import Patient from "../models/Patient.js";
 import envConfig from "../config/env.config.js";
@@ -79,7 +80,7 @@ export const authorize =
  * Resource ownership check
  */
 export const checkOwnership =
-  (resourceField = "user") =>
+  () =>
   (req: Request, res: Response, next: NextFunction): Response | void => {
     if (req.user?.role === "admin") {
       return next();

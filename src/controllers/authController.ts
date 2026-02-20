@@ -1,6 +1,8 @@
-import { Request, Response } from "express";
+import type { Request, Response } from "express";
 import { validationResult } from "express-validator";
-import authService, { LoginInput } from "../services/authService.js";
+
+import type { LoginInput } from "../services/authService.js";
+import authService from "../services/authService.js";
 
 class AuthController {
   /**

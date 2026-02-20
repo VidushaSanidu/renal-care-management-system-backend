@@ -1,8 +1,7 @@
+import type { Types, QueryFilter } from "mongoose";
+
 import DialysisSession from "../models/DialysisSession.js";
 import Patient from "../models/Patient.js";
-
-import { Types, QueryFilter } from "mongoose";
-
 import type { IDialysisSession } from "../models/DialysisSession.js";
 
 /*
@@ -19,7 +18,7 @@ export interface SessionQueryParams {
   status?: string;
 }
 
-export interface PaginationResult<T> {
+interface PaginationResult<T> {
   sessions: T[];
   total: number;
   page: number;
