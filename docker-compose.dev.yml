@@ -1,7 +1,7 @@
 version: "3.9"
 
 services:
-  backend:
+  backend-server:
     image: node:22-alpine
     container_name: renal-backend-server
 
@@ -25,9 +25,9 @@ services:
 
     restart: unless-stopped
 
-  mongodb:
+  mongodb-storage:
     image: mongo:7
-    container_name: renal-mongodb-server
+    container_name: renal-mongodb-storage
 
     ports:
       - "27017:27017"
