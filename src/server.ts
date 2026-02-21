@@ -162,7 +162,7 @@ app.use(errorHandler);
 |--------------------------------------------------------------------------
 */
 
-app.use("*", (_req: Request, res: Response) => {
+app.use("{*splate}", (_req: Request, res: Response) => {
   res.status(404).json({
     success: false,
     message: "Route not found",
