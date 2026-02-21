@@ -3,7 +3,7 @@ version: "3.9"
 services:
   backend:
     image: node:22-alpine
-    container_name: renal-backend-dev
+    container_name: renal-backend-server
 
     working_dir: /app
 
@@ -21,12 +21,13 @@ services:
 
     depends_on:
       - mongodb
+      - renal-ml-server
 
     restart: unless-stopped
 
   mongodb:
     image: mongo:7
-    container_name: renal-mongodb-dev
+    container_name: renal-mongodb-server
 
     ports:
       - "27017:27017"
