@@ -1,9 +1,9 @@
 version: "3.9"
 
 services:
-  backend-server:
+  backend:
     image: node:22-alpine
-    container_name: renal-backend-server
+    container_name: renal-backend
 
     working_dir: /app
 
