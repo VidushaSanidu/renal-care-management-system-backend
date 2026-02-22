@@ -89,7 +89,7 @@ const swaggerOptions: swaggerJsdoc.Options = {
     },
     servers: [
       {
-        url: `http://localhost:${envConfig.PORT}`,
+        url: `http://localhost:${envConfig.BACKEND_PORT}`,
       },
     ],
     components: {
@@ -175,10 +175,10 @@ app.use("{*splate}", (_req: Request, res: Response) => {
 |--------------------------------------------------------------------------
 */
 
-server.listen(envConfig.PORT, () => {
-  console.log(`🚀 Server running on port ${envConfig.PORT}`);
+server.listen(envConfig.BACKEND_PORT, () => {
+  console.log(`🚀 Server running on port ${envConfig.BACKEND_PORT}`);
 
-  console.log(`📚 Docs: http://localhost:${envConfig.PORT}/api-docs`);
+  console.log(`📚 Docs: http://localhost:${envConfig.BACKEND_PORT}/api-docs`);
 
   console.log(`🏥 Renal Care Backend Ready`);
 });
