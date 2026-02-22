@@ -15,10 +15,10 @@ JWT_EXPIRE=7d
 
 ## Express.js Configuration
 
-`PORT` is set to `5000` by default, but you can change it to any available port if needed. The `NODE_ENV` variable should be set to `production` in production environments for better security.
+`BACKEND_PORT` is set to `5000` by default, but you can change it to any available port if needed. The `NODE_ENV` variable should be set to `production` in production environments for better security.
 
 ```env
-PORT=5000
+BACKEND_PORT=5000
 NODE_ENV=development
 ```
 

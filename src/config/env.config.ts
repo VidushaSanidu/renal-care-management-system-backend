@@ -5,7 +5,7 @@ interface EnvConfig {
   JWT_EXPIRE: string;
   ML_SERVER_URL: string;
   NODE_ENV: string;
-  PORT: number;
+  BACKEND_PORT: number;
 }
 
 const envConfig: EnvConfig = {
@@ -18,7 +18,7 @@ const envConfig: EnvConfig = {
   JWT_EXPIRE: process.env.JWT_EXPIRE || "7d",
   ML_SERVER_URL: process.env.ML_SERVER_URL || "http://localhost:8001",
   NODE_ENV: process.env.NODE_ENV || "production",
-  PORT: Number(process.env.PORT) || 5000,
+  BACKEND_PORT: Number(process.env.BACKEND_PORT) || 5000,
 };
 
 export default envConfig;
