@@ -82,7 +82,7 @@ export const authorize =
 export const checkOwnership =
   () =>
   (req: Request, res: Response, next: NextFunction): Response | void => {
-    if (req.user?.role === "admin") {
+    if (req.user?.role === "ADMIN") {
       return next();
     }
 
@@ -125,19 +125,19 @@ export const checkPatientAssignment = async (
       });
     }
 
-    if (req.user?.role === "admin") {
+    if (req.user?.role === "ADMIN") {
       return next();
     }
 
     if (
-      req.user?.role === "doctor" &&
+      req.user?.role === "DOCTOR" &&
       patient.assignedDoctor?.toString() === req.user.id
     ) {
       return next();
     }
 
     if (
-      req.user?.role === "nurse" &&
+      req.user?.role === "NURSE" &&
       patient.assignedNurse?.toString() === req.user.id
     ) {
       return next();
