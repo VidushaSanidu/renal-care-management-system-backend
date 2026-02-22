@@ -11,7 +11,7 @@ import AIPrediction from "../models/AIPrediction.js";
 import Notification from "../models/Notification.js";
 import envConfig from "../config/env.config.js";
 
-dotenv.config();
+dotenv.config({quiet: true});
 
 /*
 |--------------------------------------------------------------------------
