@@ -74,7 +74,7 @@ export const predictHemoglobin = async (
       success: true,
       patient: patientData.patient,
       prediction,
-      requestedBy: req.user?.id,
+      requestedBy: req.user?._id,
       requestedAt: new Date().toISOString(),
     });
   } catch (error) {
@@ -119,7 +119,7 @@ export const predictURR = async (
       success: true,
       patient: patientData.patient,
       prediction,
-      requestedBy: req.user?.id,
+      requestedBy: req.user?._id,
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : "Server error";
@@ -162,7 +162,7 @@ export const predictDryWeight = async (
       success: true,
       patient: patientData.patient,
       prediction,
-      requestedBy: req.user?.id,
+      requestedBy: req.user?._id,
       timestamp: new Date().toISOString(),
     });
   } catch (error) {

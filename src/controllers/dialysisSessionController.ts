@@ -23,7 +23,7 @@ class DialysisSessionController {
 
       const result = await dialysisSessionService.getPatientSessions(
         patientId,
-        req.user!.id,
+        req.user._id,
         req.user!.role,
         queryParams,
       );
@@ -61,7 +61,7 @@ class DialysisSessionController {
       const session = await dialysisSessionService.getSessionById(
         patientId,
         id,
-        req.user!.id,
+        req.user._id,
         req.user!.role,
       );
 
@@ -107,7 +107,7 @@ class DialysisSessionController {
       const session = await dialysisSessionService.createSession(
         patientId,
         req.body,
-        req.user!.id,
+        req.user._id,
       );
 
       if (!session) {
@@ -155,7 +155,7 @@ class DialysisSessionController {
         patientId,
         id,
         req.body,
-        req.user!.id,
+        req.user._id,
         req.user!.role,
       );
 
@@ -252,7 +252,7 @@ class DialysisSessionController {
   async getSessionStats(req: Request, res: Response): Promise<Response> {
     try {
       const stats = await dialysisSessionService.getSessionStats(
-        req.user!.id,
+        req.user._id,
         req.user!.role,
       );
 

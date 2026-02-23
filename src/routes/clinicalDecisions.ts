@@ -47,7 +47,7 @@ router.get("/", protect, async (req: Request, res: Response) => {
     if (req.query.priority) query.priority = String(req.query.priority);
 
     // Role restriction
-    if (req.user.role === "DOCTOR") query.doctorId = req.user.id;
+    if (req.user.role === "DOCTOR") query.doctorId = req.user._id;
 
     const decisions = await ClinicalDecision.find(query)
       .populate("patient", "name patientId")
@@ -91,7 +91,7 @@ router.get("/:id", protect, async (req: Request, res: Response) => {
         message: "Clinical decision not found",
       });
 
-    if (req.user.role === "DOCTOR" && decision.id !== req.user.id)
+    if (req.user.role === "DOCTOR" && decision.id !== req.user._id)
       return res.status(403).json({
         message: "Access denied",
       });
@@ -122,7 +122,7 @@ router.post("/", protect, async (req: Request, res: Response) => {
         message: "Patient not found",
       });
 
-    if (!req.body.doctorId) req.body.doctorId = req.user.id;
+    if (!req.body.doctorId) req.body.doctorId = req.user._id;
 
     const decision = await ClinicalDecision.create(req.body);
 
@@ -151,7 +151,7 @@ router.put("/:id", protect, async (req: Request, res: Response) => {
         message: "Clinical decision not found",
       });
 
-    if (req.user.role === "DOCTOR" && decision.id !== req.user.id)
+    if (req.user.role === "DOCTOR" && decision.id !== req.user._id)
       return res.status(403).json({
         message: "Access denied",
       });
@@ -189,7 +189,7 @@ router.delete("/:id", protect, async (req: Request, res: Response) => {
         message: "Clinical decision not found",
       });
 
-    if (req.user.role === "DOCTOR" && decision.id !== req.user.id)
+    if (req.user.role === "DOCTOR" && decision.id !== req.user._id)
       return res.status(403).json({
         message: "Access denied",
       });
@@ -221,7 +221,7 @@ router.patch("/:id/implement", protect, async (req: Request, res: Response) => {
 
     const updateData: ImplementDecisionUpdate = {
       status: "implemented",
-      implementedBy: req.user.id,
+      implementedBy: req.user._id,
       implementedAt: new Date(),
     };
 

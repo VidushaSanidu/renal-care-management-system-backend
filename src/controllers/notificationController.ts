@@ -20,7 +20,7 @@ class NotificationController {
         });
       }
 
-      const userId = req.user!.id;
+      const userId = req.user._id;
 
       const options: NotificationQueryOptions = {
         page: req.query.page ? parseInt(req.query.page as string) : 1,
@@ -72,7 +72,7 @@ class NotificationController {
       }
 
       const { id } = req.params as { id: string };
-      const userId = req.user!.id;
+      const userId = req.user._id;
 
       const notification = await notificationService.getNotificationById(
         id,
@@ -118,7 +118,7 @@ class NotificationController {
 
       const notificationData = {
         ...req.body,
-        createdBy: req.user!.id,
+        createdBy: req.user._id,
       };
 
       const notification =
@@ -146,7 +146,7 @@ class NotificationController {
   async markAsRead(req: Request, res: Response): Promise<Response> {
     try {
       const { id } = req.params as { id: string };
-      const userId = req.user!.id;
+      const userId = req.user._id;
 
       const notification = await notificationService.markAsRead(id, userId);
 
@@ -177,7 +177,7 @@ class NotificationController {
    */
   async markAllAsRead(req: Request, res: Response): Promise<Response> {
     try {
-      const result = await notificationService.markAllAsRead(req.user!.id);
+      const result = await notificationService.markAllAsRead(req.user._id);
 
       return res.json({
         success: true,
@@ -199,7 +199,7 @@ class NotificationController {
    */
   async getUnreadCount(req: Request, res: Response): Promise<Response> {
     try {
-      const result = await notificationService.getUnreadCount(req.user!.id);
+      const result = await notificationService.getUnreadCount(req.user._id);
 
       return res.json({
         success: true,
@@ -225,7 +225,7 @@ class NotificationController {
 
       const notification = await notificationService.deleteNotification(
         id,
-        req.user!.id,
+        req.user._id,
       );
 
       return res.json({
@@ -252,7 +252,7 @@ class NotificationController {
 
   async deleteAllNotifications(req: Request, res: Response): Promise<Response> {
     try {
-      const userId = req.user.id;
+      const userId = req.user._id;
       const result = await notificationService.deleteAllNotifications(userId);
 
       return res.status(200).json({
@@ -295,7 +295,7 @@ class NotificationController {
 
       const { userIds, ...notificationData } = req.body;
 
-      notificationData.createdBy = req.user!.id;
+      notificationData.createdBy = req.user._id;
 
       const notifications =
         await notificationService.createBroadcastNotification(

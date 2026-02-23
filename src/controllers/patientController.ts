@@ -37,7 +37,7 @@ export const getPatientById = async (
   res: Response,
 ): Promise<Response> => {
   try {
-    const userId = req.user!.id;
+    const userId = req.user!._id;
     const patient = await PatientService.getPatientById(userId);
 
     if (!patient) {
@@ -204,7 +204,7 @@ export const addPatientNote = async (
     const noteData = {
       content: req.body.content,
       type: req.body.type ?? "GENERAL",
-      addedBy: req.user!.id,
+      addedBy: req.user!._id,
     };
     const { id } = req.params as { id: string };
 
@@ -241,7 +241,7 @@ export const getPatientStats = async (
   res: Response,
 ): Promise<Response> => {
   try {
-    const userId = req.user!.id;
+    const userId = req.user!._id;
     const user = await userService.getUserById(userId);
     const stats = await PatientService.getPatientStatistics(user);
 
@@ -269,7 +269,7 @@ export const searchPatients = async (
 ): Promise<Response> => {
   try {
     const query = req.query.q as string;
-    const userId = req.user!.id;
+    const userId = req.user!._id;
     const user = await userService.getUserById(userId);
     const patients = await PatientService.searchPatients(query, user);
 

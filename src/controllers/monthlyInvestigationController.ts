@@ -74,7 +74,7 @@ class MonthlyInvestigationController {
         await monthlyInvestigationService.createInvestigation(
           patientId,
           req.body,
-          req.user!.id,
+          req.user._id,
         );
 
       if (!investigation) {

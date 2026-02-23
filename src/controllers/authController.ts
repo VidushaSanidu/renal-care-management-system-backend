@@ -79,7 +79,7 @@ class AuthController {
    */
   async getMe(req: Request, res: Response): Promise<Response> {
     try {
-      const userId = req.user?.id;
+      const userId = req.user?._id;
 
       if (!userId) {
         return res.status(401).json({
@@ -118,7 +118,7 @@ class AuthController {
         });
       }
 
-      const userId = req.user?.id;
+      const userId = req.user?._id;
 
       if (!userId) {
         return res.status(401).json({
@@ -158,7 +158,7 @@ class AuthController {
         });
       }
 
-      const userId = req.user?.id;
+      const userId = req.user?._id;
 
       if (!userId) {
         return res.status(401).json({
