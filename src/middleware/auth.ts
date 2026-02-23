@@ -49,7 +49,10 @@ export const protect = async (
       });
     }
 
-    req.user = user;
+    req.user = {
+      _id: user._id.toString(),
+      role: user.role,
+    };
 
     next();
   } catch {
@@ -88,7 +91,7 @@ export const checkOwnership =
 
     const resourceId = req.params.id as string;
 
-    if (req.user?.id !== resourceId) {
+    if (req.user?._id !== resourceId) {
       return res.status(403).json({
         success: false,
         message: "Not authorized",
@@ -131,14 +134,14 @@ export const checkPatientAssignment = async (
 
     if (
       req.user?.role === "DOCTOR" &&
-      patient.assignedDoctor?.toString() === req.user.id
+      patient.assignedDoctor?.toString() === req.user._id
     ) {
       return next();
     }
 
     if (
       req.user?.role === "NURSE" &&
-      patient.assignedNurse?.toString() === req.user.id
+      patient.assignedNurse?.toString() === req.user._id
     ) {
       return next();
     }
@@ -178,7 +181,10 @@ export const optionalAuth = async (
       const user = await User.findById(decoded.id).select("-password");
 
       if (user) {
-        req.user = user;
+        req.user = {
+          _id: user._id.toString(),
+          role: user.role,
+        };
       }
     } catch {
       console.warn("Invalid token in optionalAuth middleware");
