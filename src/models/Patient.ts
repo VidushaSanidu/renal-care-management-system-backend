@@ -221,7 +221,7 @@ patientSchema.virtual("fullAddress").get(function (this: IPatient) {
 |--------------------------------------------------------------------------
 */
 
-patientSchema.index({ patientId: 1 });
+// patientSchema.index({ patientId: 1 });
 
 patientSchema.index({ name: 1 });
 
