@@ -37,8 +37,8 @@ export const getPatientById = async (
   res: Response,
 ): Promise<Response> => {
   try {
-    const { id } = req.params as { id: string };
-    const patient = await PatientService.getPatientById(id);
+    const userId = req.user!.id;
+    const patient = await PatientService.getPatientById(userId);
 
     if (!patient) {
       return res.status(404).json({
@@ -241,8 +241,8 @@ export const getPatientStats = async (
   res: Response,
 ): Promise<Response> => {
   try {
-    const { id } = req.params as { id: string };
-    const user = await userService.getUserById(id);
+    const userId = req.user!.id;
+    const user = await userService.getUserById(userId);
     const stats = await PatientService.getPatientStatistics(user);
 
     return res.json({
@@ -269,8 +269,8 @@ export const searchPatients = async (
 ): Promise<Response> => {
   try {
     const query = req.query.q as string;
-    const { id } = req.params as { id: string };
-    const user = await userService.getUserById(id);
+    const userId = req.user!.id;
+    const user = await userService.getUserById(userId);
     const patients = await PatientService.searchPatients(query, user);
 
     return res.json({
