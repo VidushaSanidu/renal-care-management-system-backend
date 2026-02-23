@@ -98,7 +98,11 @@ async function createUsers() {
 |--------------------------------------------------------------------------
 */
 
-async function createPatients(doctor1: Document, doctor2: Document) {
+async function createPatients(
+  doctor1: Document,
+  doctor2: Document,
+  nurse: Document,
+) {
   const patients = await Patient.insertMany([
     {
       name: "Nimal Wijesekera",
@@ -107,6 +111,7 @@ async function createPatients(doctor1: Document, doctor2: Document) {
       gender: "Male",
       bloodType: "O+",
       assignedDoctor: doctor1._id,
+      assignedNurse: nurse._id,
     },
 
     {
@@ -116,6 +121,7 @@ async function createPatients(doctor1: Document, doctor2: Document) {
       gender: "Female",
       bloodType: "A+",
       assignedDoctor: doctor1._id,
+      assignedNurse: nurse._id,
     },
 
     {
@@ -125,6 +131,7 @@ async function createPatients(doctor1: Document, doctor2: Document) {
       gender: "Male",
       bloodType: "B+",
       assignedDoctor: doctor2._id,
+      assignedNurse: nurse._id,
     },
   ]);
 
@@ -211,9 +218,9 @@ async function seedDatabase(): Promise<void> {
   try {
     await clearDatabase();
 
-    const { adminUser, doctor } = await createUsers();
+    const { adminUser, doctor, nurse } = await createUsers();
 
-    const patients = await createPatients(doctor, doctor);
+    const patients = await createPatients(doctor, doctor, nurse);
 
     await createPredictions(patients);
 

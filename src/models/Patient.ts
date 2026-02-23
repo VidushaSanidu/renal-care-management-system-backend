@@ -19,6 +19,35 @@ export interface IMedicalProblem {
   status: "ACTIVE" | "RESOLVED" | "MANAGED";
 }
 
+/*
+|--------------------------------------------------------------------------
+| Note Schema
+|--------------------------------------------------------------------------
+*/
+
+export interface INote {
+  content: string;
+  addedBy: Types.ObjectId | string;
+  addedAt?: Date;
+}
+
+const noteSchema = new Schema<INote>({
+  content: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  addedBy: {
+    type: Schema.Types.ObjectId,
+    ref: "User",
+    required: true,
+  },
+  addedAt: {
+    type: Date,
+    default: Date.now,
+  },
+});
+
 export interface IPatient extends Document {
   patientId: string;
 
@@ -66,7 +95,7 @@ export interface IPatient extends Document {
 
   fullAddress: string;
 
-  notes?: object[];
+  notes?: INote[];
 }
 
 /*
@@ -182,6 +211,7 @@ const patientSchema = new Schema<IPatient>(
       type: Date,
       default: Date.now,
     },
+    notes: [noteSchema],
   },
 
   {

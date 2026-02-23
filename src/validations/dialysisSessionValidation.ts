@@ -12,75 +12,105 @@ const dialysisSessionValidation: DialysisSessionValidationType = {
   createSession: [
     body("date").isISO8601().withMessage("Valid date is required"),
 
-    body("startTime")
-      .matches(/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/)
-      .withMessage("Valid start time is required (HH:MM)"),
+    body("hdDuration").isNumeric().withMessage("Valid HD duration is required"),
 
-    body("preDialysis.weight")
+    body("dryWeight").isNumeric().withMessage("Valid dry weight is required"),
+
+    body("preHDDryWeight")
       .isNumeric()
-      .withMessage("Valid pre-dialysis weight is required"),
+      .withMessage("Valid pre-HD dry weight is required"),
 
-    body("preDialysis.bloodPressure.systolic")
+    body("postHDDryWeight")
+      .isNumeric()
+      .withMessage("Valid post-HD dry weight is required"),
+
+    body("puf").isFloat({ min: 0 }).withMessage("Valid PUF is required"),
+
+    body("auf").isFloat({ min: 0 }).withMessage("Valid AUF is required"),
+
+    body("bloodPressure.systolic")
       .isInt({ min: 50, max: 300 })
       .withMessage("Valid systolic BP is required"),
 
-    body("preDialysis.bloodPressure.diastolic")
+    body("bloodPressure.diastolic")
       .isInt({ min: 30, max: 200 })
       .withMessage("Valid diastolic BP is required"),
 
-    body("preDialysis.heartRate")
-      .isInt({ min: 30, max: 200 })
-      .withMessage("Valid heart rate is required"),
+    body("bfr").isNumeric().withMessage("Valid BFR is required"),
 
-    body("preDialysis.temperature")
-      .isFloat({ min: 30, max: 45 })
-      .withMessage("Valid temperature is required"),
+    body("tmp").isNumeric().withMessage("Valid TMP is required"),
 
-    body("dialysisParameters.ufGoal")
-      .isFloat({ min: 0, max: 5 })
-      .withMessage("Valid UF goal is required"),
+    body("ap").isNumeric().withMessage("Valid AP is required"),
 
-    body("vascularAccess.type")
-      .isIn(["AVF", "AVG", "CENTRAL_CATHETER", "PERITONEAL_CATHETER"])
-      .withMessage("Valid access type is required"),
-
-    body("vascularAccess.site")
-      .notEmpty()
-      .withMessage("Access site is required"),
+    body("vp").isNumeric().withMessage("Valid VP is required"),
   ],
 
-  // Update session validation
+  // Update session validation (partial updates allowed)
   updateSession: [
     body("date").optional().isISO8601().withMessage("Valid date is required"),
 
-    body("startTime")
+    body("hdDuration")
       .optional()
-      .matches(/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/)
-      .withMessage("Valid start time is required"),
+      .isNumeric()
+      .withMessage("Valid HD duration is required"),
 
-    body("endTime")
+    body("dryWeight")
       .optional()
-      .matches(/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/)
-      .withMessage("Valid end time is required"),
+      .isNumeric()
+      .withMessage("Valid dry weight is required"),
+
+    body("preHDDryWeight")
+      .optional()
+      .isNumeric()
+      .withMessage("Valid pre-HD dry weight is required"),
+
+    body("postHDDryWeight")
+      .optional()
+      .isNumeric()
+      .withMessage("Valid post-HD dry weight is required"),
+
+    body("puf")
+      .optional()
+      .isFloat({ min: 0 })
+      .withMessage("Valid PUF is required"),
+
+    body("auf")
+      .optional()
+      .isFloat({ min: 0 })
+      .withMessage("Valid AUF is required"),
+
+    body("bloodPressure.systolic")
+      .optional()
+      .isInt({ min: 50, max: 300 })
+      .withMessage("Valid systolic BP is required"),
+
+    body("bloodPressure.diastolic")
+      .optional()
+      .isInt({ min: 30, max: 200 })
+      .withMessage("Valid diastolic BP is required"),
+
+    body("bfr").optional().isNumeric().withMessage("Valid BFR is required"),
+
+    body("tmp").optional().isNumeric().withMessage("Valid TMP is required"),
+
+    body("ap").optional().isNumeric().withMessage("Valid AP is required"),
+
+    body("vp").optional().isNumeric().withMessage("Valid VP is required"),
   ],
 
   // Complete session validation
   completeSession: [
-    body("postDialysis.weight")
+    body("postHDDryWeight")
       .isNumeric()
-      .withMessage("Post-dialysis weight is required"),
+      .withMessage("Post-HD dry weight is required"),
 
-    body("postDialysis.bloodPressure.systolic")
+    body("bloodPressure.systolic")
       .isInt({ min: 50, max: 300 })
       .withMessage("Valid systolic BP is required"),
 
-    body("postDialysis.bloodPressure.diastolic")
+    body("bloodPressure.diastolic")
       .isInt({ min: 30, max: 200 })
       .withMessage("Valid diastolic BP is required"),
-
-    body("endTime")
-      .matches(/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/)
-      .withMessage("Valid end time is required"),
   ],
 };
 

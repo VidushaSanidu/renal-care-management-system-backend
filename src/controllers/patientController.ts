@@ -13,8 +13,8 @@ export const getPatients = async (
   res: Response,
 ): Promise<Response> => {
   try {
-    const { id } = req.params as { id: string };
-    const user = await userService.getUserById(id);
+    const userId = req.user!._id;
+    const user = await userService.getUserById(userId);
     const result = await PatientService.getAllPatients(user);
 
     return res.json(result);
@@ -37,9 +37,8 @@ export const getPatientById = async (
   res: Response,
 ): Promise<Response> => {
   try {
-    const userId = req.user!._id;
-    console.log("req.user:", req.user);
-    const patient = await PatientService.getPatientById(userId);
+    const { id } = req.params as { id: string };
+    const patient = await PatientService.getPatientById(id);
 
     if (!patient) {
       return res.status(404).json({

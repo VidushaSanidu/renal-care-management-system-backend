@@ -115,7 +115,7 @@ router.post("/", protect, async (req: Request, res: Response) => {
         message: "Access denied",
       });
 
-    const patient = await Patient.findById(req.body.patient);
+    const patient = await Patient.findById(req.body.patientId);
 
     if (!patient)
       return res.status(400).json({
