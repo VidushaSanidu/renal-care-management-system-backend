@@ -142,14 +142,14 @@ class DialysisSessionService {
     }
 
     if (
-      userRole === "doctor" &&
+      userRole === "DOCTOR" &&
       patient.assignedDoctor?.toString() !== userId.toString()
     ) {
       throw new Error("Not authorized");
     }
 
     if (
-      userRole === "nurse" &&
+      userRole === "NURSE" &&
       session.nurse?.toString() !== userId.toString()
     ) {
       throw new Error("Not authorized");
@@ -228,7 +228,7 @@ class DialysisSessionService {
     }
 
     if (
-      userRole === "nurse" &&
+      userRole === "NURSE" &&
       session.nurse?.toString() !== userId.toString()
     ) {
       throw new Error("Not authorized");
@@ -316,7 +316,7 @@ class DialysisSessionService {
   ) {
     const match: Record<string, unknown> = {};
 
-    if (userRole === "doctor") {
+    if (userRole === "DOCTOR") {
       const patients = await Patient.find({
         assignedDoctor: userId,
       }).select("_id");
@@ -326,7 +326,7 @@ class DialysisSessionService {
       };
     }
 
-    if (userRole === "nurse") {
+    if (userRole === "NURSE") {
       match.nurse = userId;
     }
 

@@ -24,7 +24,7 @@ const authValidation: ValidationSchema = {
       .isLength({ min: 6 })
       .withMessage("Password must be at least 6 characters"),
 
-    body("role").isIn(["nurse", "doctor", "admin"]).withMessage("Invalid role"),
+    body("role").isIn(["NURSE", "DOCTOR", "ADMIN"]).withMessage("Invalid role"),
   ],
 
   // Login validation

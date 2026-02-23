@@ -307,7 +307,7 @@ monthlyInvestigationSchema.post(
         }
 
         const staff = await User.find({
-          role: { $in: ["doctor", "nurse", "admin"] },
+          role: { $in: ["DOCTOR", "NURSE", "ADMIN"] },
           isActive: true,
         });
 

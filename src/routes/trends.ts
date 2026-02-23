@@ -13,7 +13,7 @@ const router: Router = express.Router();
 router.get(
   "/hb/:patientId",
   protect,
-  authorize("doctor", "nurse"),
+  authorize("DOCTOR", "NURSE"),
   async (
     req: Request<{ patientId: string }, unknown, unknown, { months?: string }>,
     res: Response,

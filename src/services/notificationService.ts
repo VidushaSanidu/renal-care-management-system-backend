@@ -262,7 +262,7 @@ class NotificationService {
   ) {
     const users = await User.find({
       role: {
-        $in: ["doctor", "nurse"],
+        $in: ["DOCTOR", "NURSE"],
       },
       isActive: true,
     }).select("_id");

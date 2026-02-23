@@ -14,7 +14,7 @@ const router: Router = express.Router();
 router.get(
   "/stats/overview",
   protect,
-  authorize("admin"),
+  authorize("ADMIN"),
   userController.getUserStats,
 );
 
@@ -27,7 +27,7 @@ router.get("/role/:role", protect, userController.getUsersByRole);
 /**
  * Get all users
  */
-router.get("/", protect, authorize("admin"), userController.getAllUsers);
+router.get("/", protect, authorize("ADMIN"), userController.getAllUsers);
 
 /**
  * Create user
@@ -35,7 +35,7 @@ router.get("/", protect, authorize("admin"), userController.getAllUsers);
 router.post(
   "/",
   protect,
-  authorize("admin"),
+  authorize("ADMIN"),
   userValidation.createUser,
   userController.createUser,
 );
@@ -51,7 +51,7 @@ router.get("/:id", protect, userController.getUserById);
 router.put(
   "/:id",
   protect,
-  authorize("admin"),
+  authorize("ADMIN"),
   userValidation.updateUser,
   userController.updateUser,
 );
@@ -59,7 +59,7 @@ router.put(
 /**
  * Delete user
  */
-router.delete("/:id", protect, authorize("admin"), userController.deleteUser);
+router.delete("/:id", protect, authorize("ADMIN"), userController.deleteUser);
 
 /**
  * Activate user
@@ -67,7 +67,7 @@ router.delete("/:id", protect, authorize("admin"), userController.deleteUser);
 router.put(
   "/:id/activate",
   protect,
-  authorize("admin"),
+  authorize("ADMIN"),
   userController.activateUser,
 );
 

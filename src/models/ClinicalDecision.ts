@@ -168,7 +168,7 @@ clinicalDecisionSchema.post(
 
       if (doc.status === "APPROVED") {
         const nurses = await User.find({
-          role: "nurse",
+          role: "NURSE",
           isActive: true,
         });
 
@@ -196,7 +196,7 @@ clinicalDecisionSchema.post(
         doc.diagnosis.primary.toLowerCase().includes("critical")
       ) {
         const staff = await User.find({
-          role: { $in: ["doctor", "nurse"] },
+          role: { $in: ["DOCTOR", "NURSE"] },
           isActive: true,
         });
 

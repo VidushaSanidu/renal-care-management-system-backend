@@ -20,7 +20,7 @@ const userValidation: UserValidationType = {
       .isLength({ min: 6 })
       .withMessage("Password must be at least 6 characters"),
 
-    body("role").isIn(["nurse", "doctor", "admin"]).withMessage("Invalid role"),
+    body("role").isIn(["NURSE", "DOCTOR", "ADMIN"]).withMessage("Invalid role"),
   ],
 
   // Update user validation
@@ -39,7 +39,7 @@ const userValidation: UserValidationType = {
 
     body("role")
       .optional()
-      .isIn(["nurse", "doctor", "admin"])
+      .isIn(["NURSE", "DOCTOR", "ADMIN"])
       .withMessage("Invalid role"),
   ],
 };

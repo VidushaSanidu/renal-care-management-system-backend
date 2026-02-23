@@ -314,7 +314,7 @@ aiPredictionSchema.post(
 
       if (notificationType === "CRITICAL") {
         const staff = await User.find({
-          role: { $in: ["nurse", "admin"] },
+          role: { $in: ["NURSE", "ADMIN"] },
           isActive: true,
         });
 

@@ -14,7 +14,7 @@ const router: Router = express.Router();
 router.get(
   "/stats/overview",
   protect,
-  authorize("doctor", "nurse"),
+  authorize("DOCTOR", "NURSE"),
   dialysisSessionController.getSessionStats,
 );
 
@@ -24,14 +24,14 @@ router.get(
 router.get(
   "/:patientId",
   protect,
-  authorize("doctor", "nurse"),
+  authorize("DOCTOR", "NURSE"),
   dialysisSessionController.getPatientSessions,
 );
 
 router.post(
   "/:patientId",
   protect,
-  authorize("nurse", "doctor"),
+  authorize("DOCTOR", "NURSE"),
   dialysisSessionValidation.createSession,
   dialysisSessionController.createSession,
 );
@@ -42,14 +42,14 @@ router.post(
 router.get(
   "/:patientId/:id",
   protect,
-  authorize("doctor", "nurse"),
+  authorize("DOCTOR", "NURSE"),
   dialysisSessionController.getSessionById,
 );
 
 router.put(
   "/:patientId/:id",
   protect,
-  authorize("doctor", "nurse"),
+  authorize("DOCTOR", "NURSE"),
   dialysisSessionValidation.updateSession,
   dialysisSessionController.updateSession,
 );
@@ -57,7 +57,7 @@ router.put(
 router.put(
   "/:patientId/:id/complete",
   protect,
-  authorize("nurse", "doctor"),
+  authorize("DOCTOR", "NURSE"),
   dialysisSessionValidation.completeSession,
   dialysisSessionController.completeSession,
 );
@@ -65,7 +65,7 @@ router.put(
 router.delete(
   "/:patientId/:id",
   protect,
-  authorize("doctor", "nurse"),
+  authorize("DOCTOR", "NURSE"),
   dialysisSessionController.deleteSession,
 );
 

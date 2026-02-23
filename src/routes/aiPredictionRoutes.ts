@@ -25,7 +25,7 @@ const router: Router = express.Router();
 router.get(
   "/predict/hb/:patientId",
   protect,
-  authorize("doctor", "nurse"),
+  authorize("DOCTOR", "NURSE"),
   validatePatientIdParam,
   predictHemoglobin,
 );
@@ -40,7 +40,7 @@ router.get(
 router.get(
   "/predict/urr/:patientId",
   protect,
-  authorize("doctor", "nurse"),
+  authorize("DOCTOR", "NURSE"),
   validatePatientIdParam,
   predictURR,
 );
@@ -55,7 +55,7 @@ router.get(
 router.get(
   "/predict/dry-weight/:patientId",
   protect,
-  authorize("doctor", "nurse"),
+  authorize("DOCTOR", "NURSE"),
   validatePatientIdParam,
   predictDryWeight,
 );

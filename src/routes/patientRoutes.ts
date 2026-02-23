@@ -29,7 +29,7 @@ const router: Router = express.Router();
 /**
  * Get all patients
  */
-router.get("/", protect, authorize("doctor", "nurse"), getPatients);
+router.get("/", protect, authorize("DOCTOR", "NURSE"), getPatients);
 
 /**
  * Get patient by ID
@@ -42,7 +42,7 @@ router.get("/:id", protect, validatePatientId, getPatientById);
 router.post(
   "/",
   protect,
-  authorize("nurse", "doctor", "admin"),
+  authorize("NURSE", "DOCTOR", "ADMIN"),
   validateCreatePatient,
   createPatient,
 );
@@ -65,7 +65,7 @@ router.put(
 router.delete(
   "/:id",
   protect,
-  authorize("admin"),
+  authorize("ADMIN"),
   validatePatientId,
   deletePatient,
 );

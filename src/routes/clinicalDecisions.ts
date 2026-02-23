@@ -110,7 +110,7 @@ router.get("/:id", protect, async (req: Request, res: Response) => {
 
 router.post("/", protect, async (req: Request, res: Response) => {
   try {
-    if (!["doctor", "admin"].includes(req.user.role))
+    if (!["DOCTOR", "ADMIN"].includes(req.user.role))
       return res.status(403).json({
         message: "Access denied",
       });
@@ -151,7 +151,7 @@ router.put("/:id", protect, async (req: Request, res: Response) => {
         message: "Clinical decision not found",
       });
 
-    if (req.user.role === "doctor" && decision.id !== req.user.id)
+    if (req.user.role === "DOCTOR" && decision.id !== req.user.id)
       return res.status(403).json({
         message: "Access denied",
       });
@@ -189,7 +189,7 @@ router.delete("/:id", protect, async (req: Request, res: Response) => {
         message: "Clinical decision not found",
       });
 
-    if (req.user.role === "doctor" && decision.id !== req.user.id)
+    if (req.user.role === "DOCTOR" && decision.id !== req.user.id)
       return res.status(403).json({
         message: "Access denied",
       });

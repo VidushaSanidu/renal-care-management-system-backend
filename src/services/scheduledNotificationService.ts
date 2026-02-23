@@ -113,7 +113,7 @@ class ScheduledNotificationService {
         }
 
         const nurses = await User.find({
-          role: "nurse",
+          role: "NURSE",
           isActive: true,
         }).limit(2);
 
@@ -216,7 +216,7 @@ class ScheduledNotificationService {
   static async sendWeeklyPatientReviews(): Promise<void> {
     try {
       const doctors = await User.find({
-        role: "doctor",
+        role: "DOCTOR",
         isActive: true,
       });
 
@@ -260,7 +260,7 @@ class ScheduledNotificationService {
       if (new Date().getDay() !== 0) return;
 
       const staff = await User.find({
-        role: { $in: ["nurse", "admin"] },
+        role: { $in: ["NURSE", "ADMIN"] },
         isActive: true,
       }).limit(3);
 

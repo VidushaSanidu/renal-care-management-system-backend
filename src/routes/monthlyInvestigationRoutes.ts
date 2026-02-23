@@ -85,7 +85,7 @@ const router: Router = express.Router();
 router.get(
   "/:patientId",
   protect,
-  authorize("doctor", "nurse"),
+  authorize("DOCTOR", "NURSE"),
   monthlyInvestigationController.getPatientInvestigations,
 );
 
@@ -95,7 +95,7 @@ router.get(
 router.post(
   "/:patientId",
   protect,
-  authorize("doctor", "nurse"),
+  authorize("DOCTOR", "NURSE"),
   monthlyInvestigationValidation.createInvestigation,
   monthlyInvestigationController.createInvestigation,
 );
@@ -106,7 +106,7 @@ router.post(
 router.get(
   "/:patientId/:id",
   protect,
-  authorize("doctor", "nurse"),
+  authorize("DOCTOR", "NURSE"),
   monthlyInvestigationController.getInvestigationById,
 );
 
@@ -116,7 +116,7 @@ router.get(
 router.put(
   "/:patientId/:id",
   protect,
-  authorize("doctor", "nurse"),
+  authorize("DOCTOR", "NURSE"),
   monthlyInvestigationValidation.updateInvestigation,
   monthlyInvestigationController.updateInvestigation,
 );
@@ -127,7 +127,7 @@ router.put(
 router.delete(
   "/:patientId/:id",
   protect,
-  authorize("doctor", "nurse"),
+  authorize("DOCTOR", "NURSE"),
   monthlyInvestigationController.deleteInvestigation,
 );
 
