@@ -227,7 +227,7 @@ const aiPredictionSchema = new Schema<IAIPrediction>(
 |--------------------------------------------------------------------------
 */
 
-aiPredictionSchema.index({ predictionId: 1 });
+// aiPredictionSchema.index({ predictionId: 1 });
 aiPredictionSchema.index({ patient: 1 });
 aiPredictionSchema.index({ predictionType: 1 });
 aiPredictionSchema.index({ "prediction.severity": 1 });
@@ -307,6 +307,7 @@ aiPredictionSchema.post(
           title: `AI Prediction: ${doc.predictionType}`,
           message: `${doc.prediction.outcome} (${doc.prediction.probability}%)`,
           type: notificationType,
+          category: "PATIENT_ALERT",
           priority,
           recipient: assignedDoctorId,
         });
@@ -324,6 +325,7 @@ aiPredictionSchema.post(
               title: `Critical AI Alert`,
               message: `${doc.predictionType}: ${doc.prediction.outcome}`,
               type: "CRITICAL",
+              category: "PATIENT_ALERT",
               priority: "URGENT",
               recipient: s._id,
             }),

@@ -341,6 +341,7 @@ dialysisSessionSchema.post(
             title: `Dialysis Alert`,
             message: issue.message,
             type: issue.priority === "HIGH" ? "WARNING" : "INFO",
+            category: "PATIENT_ALERT",
             priority: issue.priority,
             recipient: patient.assignedDoctor as Types.ObjectId,
           });
@@ -351,6 +352,7 @@ dialysisSessionSchema.post(
             title: `Session Issue`,
             message: issue.message,
             type: issue.priority === "HIGH" ? "WARNING" : "INFO",
+            category: "PATIENT_ALERT",
             priority: issue.priority,
             recipient: doc.nurse,
           });

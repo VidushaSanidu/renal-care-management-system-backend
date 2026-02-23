@@ -302,6 +302,7 @@ monthlyInvestigationSchema.post(
             message: `${patient.name}: ${value.parameter} ${value.value}`,
             type: "CRITICAL",
             priority: "URGENT",
+            category: "LAB_RESULT",
             recipient: patient.assignedDoctor,
           });
         }
@@ -318,6 +319,7 @@ monthlyInvestigationSchema.post(
               message: `${patient.name}: ${value.parameter} ${value.value}`,
               type: "CRITICAL",
               priority: "URGENT",
+              category: "LAB_RESULT",
               recipient: user._id,
             }),
           ),

@@ -38,6 +38,7 @@ export const getPatientById = async (
 ): Promise<Response> => {
   try {
     const userId = req.user!._id;
+    console.log("req.user:", req.user);
     const patient = await PatientService.getPatientById(userId);
 
     if (!patient) {

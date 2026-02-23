@@ -106,7 +106,7 @@ const clinicalDecisionSchema = new Schema<IClinicalDecision>(
 |--------------------------------------------------------------------------
 */
 
-clinicalDecisionSchema.index({ decisionId: 1 });
+// clinicalDecisionSchema.index({ decisionId: 1 });
 clinicalDecisionSchema.index({ patient: 1 });
 clinicalDecisionSchema.index({ doctor: 1 });
 clinicalDecisionSchema.index({ date: -1 });
@@ -154,6 +154,7 @@ clinicalDecisionSchema.post(
             title: "Clinical Decision Saved",
             message: `Clinical decision for ${patient.name} saved as draft`,
             type: "INFO",
+            category: "PATIENT_ALERT",
             priority: "LOW",
             recipient: doc.doctor,
           });
@@ -178,6 +179,7 @@ clinicalDecisionSchema.post(
               title: "Clinical Decision Approved",
               message: `Decision approved for ${patient.name}`,
               type: "SUCCESS",
+              category: "PATIENT_ALERT",
               priority: "MEDIUM",
               recipient: nurse._id,
             }),
@@ -206,6 +208,7 @@ clinicalDecisionSchema.post(
               title: "Critical Clinical Decision",
               message: `${patient.name}: ${doc.diagnosis.primary}`,
               type: "CRITICAL",
+              category: "PATIENT_ALERT",
               priority: "URGENT",
               recipient: user._id,
             }),
