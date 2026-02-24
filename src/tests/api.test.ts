@@ -187,6 +187,7 @@ describe("Notification Service", () => {
       createdAt: new Date(),
       updatedAt: new Date(),
       isExpired: false,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any;
 
     const createNotificationSpy = jest.spyOn(

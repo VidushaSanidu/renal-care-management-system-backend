@@ -68,7 +68,7 @@ async function createUsers() {
 
   const doctor = await User.create({
     name: "Dr. Demo",
-    email: "demo.doctor@renalcare.com",
+    email: "doctor@renalcare.com",
     password: "doctor123!",
     role: "DOCTOR",
     specialization: "Demo Specialization",
@@ -77,7 +77,7 @@ async function createUsers() {
 
   const nurse = await User.create({
     name: "Demo Nurse",
-    email: "demo.nurse@renalcare.com",
+    email: "nurse@renalcare.com",
     password: "nurse123!",
     role: "NURSE",
     department: "Demo",
@@ -230,8 +230,8 @@ async function seedDatabase(): Promise<void> {
 
     console.log("Login credentials:");
     console.log("Admin: admin@renalcare.com / admin123!");
-    console.log("Doctor: demo.doctor@renalcare.com / doctor123!");
-    console.log("Nurse: demo.nurse@renalcare.com / nurse123!");
+    console.log("Doctor: doctor@renalcare.com / doctor123!");
+    console.log("Nurse: nurse@renalcare.com / nurse123!");
   } catch (error) {
     console.error("Seed error:", error);
   }
