@@ -111,24 +111,24 @@ router.get("/:id", protect, async (req: Request, res: Response) => {
 router.post("/", protect, async (req: Request, res: Response) => {
   try {
     if (!["DOCTOR", "ADMIN"].includes(req.user.role))
-      return res.status(403).json({
-        message: "Access denied",
-      });
+      return res.status(403).json({ message: "Access denied" });
 
-    const patient = await Patient.findById(req.body.patientId);
+    const { patient, doctor, ...rest } = req.body;
 
-    if (!patient)
-      return res.status(400).json({
-        message: "Patient not found",
-      });
+    const existingPatient = await Patient.findById(patient);
 
-    if (!req.body.doctorId) req.body.doctorId = req.user._id;
+    if (!existingPatient)
+      return res.status(400).json({ message: "Patient not found" });
 
-    const decision = await ClinicalDecision.create(req.body);
+    const decision = await ClinicalDecision.create({
+      ...rest,
+      patient,
+      doctor: doctor || req.user._id,
+    });
 
     const populatedDecision = await ClinicalDecision.findById(decision._id)
       .populate("patient", "name patientId")
-      .populate("doctorId", "name");
+      .populate("doctor", "name");
 
     res.status(201).json(populatedDecision);
   } catch (error: unknown) {
