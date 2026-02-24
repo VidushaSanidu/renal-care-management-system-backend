@@ -180,7 +180,7 @@ server.listen(envConfig.BACKEND_PORT, () => {
 
   console.log(`📚 Docs: http://localhost:${envConfig.BACKEND_PORT}/api-docs`);
 
-  console.log(`🏥 Renal Care Backend Ready`);
+  console.log(`🏥 Renal Care Backend Stared`);
 });
 
 /*

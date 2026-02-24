@@ -558,7 +558,8 @@ class AIPredictionService {
 
       if (error.response) {
         return new Error(
-          `ML Server Error (${error.response.status}): ${error.response.data?.message ?? "Unknown error"
+          `ML Server Error (${error.response.status}): ${
+            error.response.data?.message ?? "Unknown error"
           }`,
         );
       }
