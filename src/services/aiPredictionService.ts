@@ -75,10 +75,22 @@ class AIPredictionService {
       throw new Error("No investigation data found");
     }
 
+    if (!latestInvestigation.bu_pre_hd || !latestInvestigation.bu_post_hd) {
+      throw new Error("Invalid BU values");
+    }
+
     const predictionData = {
       albumin: latestInvestigation.albumin,
-      bu_post_hd: latestInvestigation.bu_post_hd,
-      bu_pre_hd: latestInvestigation.bu_pre_hd,
+
+      // ⚠️ IMPORTANT: Unit Conversion for Urea (BU)
+      // Frontend stores BU values in mg/dL.
+      // However, the ML models (URR & Hb) were trained using mmol/L.
+      // 1 mmol/L = 2.8 mg/dL
+      // Therefore, we must convert mg/dL → mmol/L before sending to ML server.
+      // If not converted, serializer validation fails and model predictions become incorrect.
+      bu_pre_hd: latestInvestigation.bu_pre_hd! / 2.8,
+      bu_post_hd: latestInvestigation.bu_post_hd! / 2.8,
+
       s_ca: latestInvestigation.sCa,
       scr_post_hd: latestInvestigation.scrPostHD,
       scr_pre_hd: latestInvestigation.scrPreHD,
@@ -172,6 +184,10 @@ class AIPredictionService {
       if (!latestInvestigation)
         throw new Error("No monthly investigation data found");
 
+      if (!latestInvestigation.bu_pre_hd || !latestInvestigation.bu_post_hd) {
+        throw new Error("Invalid BU values");
+      }
+
       const requiredFields = {
         albumin: latestInvestigation.albumin,
         hb: latestInvestigation.hb,
@@ -182,8 +198,14 @@ class AIPredictionService {
         serum_k_pre_hd: latestInvestigation.serumKPreHD,
         serum_k_post_hd: latestInvestigation.serumKPostHD,
 
-        bu_pre_hd: latestInvestigation.bu_pre_hd,
-        bu_post_hd: latestInvestigation.bu_post_hd,
+        // ⚠️ IMPORTANT: Unit Conversion for Urea (BU)
+        // Frontend stores BU values in mg/dL.
+        // However, the ML models (URR & Hb) were trained using mmol/L.
+        // 1 mmol/L = 2.8 mg/dL
+        // Therefore, we must convert mg/dL → mmol/L before sending to ML server.
+        // If not converted, serializer validation fails and model predictions become incorrect.
+        bu_pre_hd: latestInvestigation.bu_pre_hd! / 2.8,
+        bu_post_hd: latestInvestigation.bu_post_hd! / 2.8,
 
         scr_pre_hd: latestInvestigation.scrPreHD,
         scr_post_hd: latestInvestigation.scrPostHD,
@@ -536,8 +558,7 @@ class AIPredictionService {
 
       if (error.response) {
         return new Error(
-          `ML Server Error (${error.response.status}): ${
-            error.response.data?.message ?? "Unknown error"
+          `ML Server Error (${error.response.status}): ${error.response.data?.message ?? "Unknown error"
           }`,
         );
       }
