@@ -17,23 +17,4 @@ services:
 
     command: npm run dev
 
-    depends_on:
-      - mongodb
-      - renal-ml-server
-
     restart: unless-stopped
-
-  mongodb-storage:
-    image: mongo:7
-    container_name: renal-mongodb-storage
-
-    ports:
-      - "27017:27017"
-
-    volumes:
-      - mongodb_data:/data/db
-
-    restart: unless-stopped
-
-volumes:
-  mongodb_data:
