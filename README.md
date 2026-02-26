@@ -210,8 +210,7 @@ The backend server includes unit and integration tests using Jest. To run the te
 npm test
 # or using bun
 bun test
-`
+```
 ## Security Configuration
 
 Please Read the [ENV.md](ENV.md) file for details about environment variables and security configuration.
-```
