@@ -26,6 +26,9 @@ NODE_ENV=development
 
 This backend uses MongoDB as the database. You need to provide the connection URI for your MongoDB instance. If you are running MongoDB locally with default settings, you can use the following URI. For production, you should use a secure connection string that includes authentication credentials.
 
+If your MongoDB username or password contains special characters (for example `%`, `&`, `#`, `@`, `/`, `:`), you must percent-encode them in `MONGODB_URI`.
+Example: a password like `viduz%&23` must be encoded as `viduz%25%2623` inside the URI.
+
 ```env
 MONGODB_URI=mongodb://localhost:27017/renal-care-db
 ```

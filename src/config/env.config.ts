@@ -1,3 +1,8 @@
+import dotenv from "dotenv";
+
+// Ensure environment variables are loaded before this module reads process.env.
+dotenv.config({ quiet: true });
+
 interface EnvConfig {
   MONGODB_URI: string;
   FRONTEND_URL: string;
@@ -18,7 +23,7 @@ const envConfig: EnvConfig = {
   JWT_EXPIRE: process.env.JWT_EXPIRE || "7d",
   ML_SERVER_URL: process.env.ML_SERVER_URL || "http://localhost:8001",
   NODE_ENV: process.env.NODE_ENV || "production",
-  BACKEND_PORT: Number(process.env.BACKEND_PORT) || 5000,
+  BACKEND_PORT: Number(process.env.BACKEND_PORT) || 4000,
 };
 
 export default envConfig;

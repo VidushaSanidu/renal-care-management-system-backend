@@ -6,9 +6,10 @@
   "type": "module",
   "scripts": {
     "start": "node dist/server.js",
-    "dev": "nodemon --watch src --exec ts-node src/server.ts",
+    "dev": "tsx watch src/server.ts",
     "build": "tsc",
-    "seed": "node dist/seeds/seedDatabase.js",
+    "seed": "npm run build && node dist/seeds/seedDatabase.js",
+    "seed:dev": "tsx src/seeds/seedDatabase.ts",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
@@ -54,7 +55,7 @@
     "nodemon": "^3.1.11",
     "prettier": "^3.8.1",
     "supertest": "^7.2.2",
-    "ts-node": "^10.9.2",
+    "tsx": "^4.22.4",
     "typescript": "^5.9.3",
     "typescript-eslint": "^8.56.0"
   }

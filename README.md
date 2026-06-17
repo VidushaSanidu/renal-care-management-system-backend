@@ -48,7 +48,7 @@ This is the backend server for the Renal Care Management System. It is built usi
    Edit the `.env` file with your configuration:
 
    ```env
-   PORT=5000
+   BACKEND_PORT=5000
    MONGODB_URI=mongodb://localhost:27017/renal-care
    JWT_SECRET=your-super-secret-jwt-key
    JWT_EXPIRE=7d
